@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119824152-2"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-119824152-2');
+    </script>
+    <!-- Facebook jssdk-->
+    <script id="facebook-jssdk" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v3.0"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>Důsledky uvolňování a utahování opatření proti šíření COVID-19 - Model antiCOVID-19 IDEA</title>
+
+    <!-- External libraries and fonts -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link href="//fonts.googleapis.com/css?family=Nunito+Sans&amp;subset=latin-ext" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+    <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
+
+
+
+    <!-- own scripts -->
+    <script type="text/javascript" src="js/chart.js"></script>
+    <script type="text/javascript" src="js/controls.js"></script>
+    <script type="text/javascript" src="js/page.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="css/chart.css">
+    </link>
+    <link rel="stylesheet" type="text/css" href="css/page.css">
+    </link>
+</head>
+
+<body onload="loadJS()">
+    <div id="everything">
+        <div id="intro" class="fix fullscreen fixactive">
+            <div class="content">
+                <h1 id="title">Důsledky uvolňování a utahování opatření proti šíření COVID-19</h1>
+                <h2 id="subtitle">Vizualizace modelu B iniciativy antiCOVID-19 pro ČR (s regionální strukturou a třemi generacemi)</h2>
+
+                <p style="font-size:calc(15px + .7vh);">Jan Smyčka, Luděk Berec a kol.</p>
+                <div id="logos">
+                    <a href="https://idea.cerge-ei.cz/" target="_blank"><img src="img/idea-white2.svg" class="logo" /></a>
+                    <a href="http://av21.avcr.cz/" target="_blank"><img src="img/strategie_red_white.svg" class="logo" /></a>
+                </div>
+
+                <p style="line-height: .5">Think-tank IDEA při CERGE-EI</p>
+                <p style="line-height: .5">Studie č. X/2020</p>
+                <p style="line-height: .5">Květen 2020</p>
+                <br />
+                <img src="img/down-arrow2.svg" onclick="MoveOn('context')" class='arrow' title="Posunujte kolečkem myši dolů" />
+
+            </div>
+        </div>
+        <div id="empty-intro" class="fixempty fullscreen"></div>
+        <div id="menu" class="floaty">
+                <a class="corner" id="logoIDEA" href="https://idea.cerge-ei.cz/" target="_blank" ><img src="img/IDEA2.png" /></a>
+            <div class="content">
+
+                <center>
+                    <a id="mIntro" onclick="MoveOn('context')">Úvod</a>
+                    <a id="mapp" onclick="MoveOn('empt-app')">Baseline</a>
+                    <a id="mSchools" onclick="MoveOn('school-close')">Uzavření škol</a>
+                    <a id="mSeniors" onclick="MoveOn('senior-isolation')">Izolace seniorů</a>
+                </center>
+            </div>
+            <a class="corner" id="strategyav" href="http://av21.avcr.cz/" target="_blank"><img src="img/GolemioGrey.png" height="37" width="106" /></a>
+
+        </div>
+        <div id="menuempty"></div>
+        <div id="context" class="flow flowtext">
+            <div class="content">
+                <h3>Úvod</h3>
+                <p>Co to je za model?</p>
+                <p>Co ten model neumí? Předpovídat budoucnost</p>
+            </div>
+        </div>
+        <div id="app" class="fix fullscreen">
+            <div id="chartcontainer">
+
+            </div>
+        </div>
+        <div id="empt-app" class="fixempty fullscreen"></div>
+        <div class="fixempty fullscreen"></div>
+
+        <div id="school-close" class="flow flowtext">
+            <div class="content">
+                <h3>Uzavření škol</h3>
+            </div>
+        </div>
+        <div id="empt-school-close" class="fixempty fullscreen"></div>
+
+        <div id="senior-isolation" class="flow flowtext">
+            <div class="content">
+                <h3>Izolace seniorů</h3>
+            </div>
+        </div>
+        <div id="empt-senior-isolation" class="fixempty fullscreen"></div>
+    
+        <div id="thanks" class="flow">
+            <div class="content">
+                <h1 id="title">Děkujeme za pozornost!</h1>
+
+                <a href="https://idea.cerge-ei.cz/" target="_blank"><img src="img/IDEA_greybcg.svg" class="logo" /></a>
+                <a href="http://av21.avcr.cz/" target="_blank"><img src="img/Logo_Strategie_V3m.svg" class="logo" /></a>
+                <h2 id="subtitle">Pokud se Vám to líbilo, nezapomeňte se o to podělit s ostatními!</h2>
+
+
+                <div id="shares">
+                    <a id="fb" target="_blank" href=""><img src="img/fb.svg" /></a>
+                    <a id="tw" target="_blank" href=""><img src="img/twitter2.svg" /></a>
+                    <a id="li" target="_blank" href=""><img src="img/linkedin.svg" /></a>
+                    <a id="mail" href=""><img src="img/mail.svg" /></a>
+                    <a onclick="showCopyLink()"><img src="img/link.svg" /></a>
+                </div>
+                <div>
+
+                    <div></div>
+                </div>
+
+                <!-- <p class="footcredits">Seznam použité literatury je k dispozici <a class="modalLink" onclick="showModal('modLiterature')">zde</a>.</p> -->
+
+                <p class="footcredits">Doporučená citace: <a class="modalLink" onclick="showModal('modMy')">Macháček, V. a
+                        Srholec, M.</a> (2020) Odkud se rekrutují výzkumníci na univerzitách? Studie 1/2020.
+                    Think-tank IDEA při NHÚ AV ČR.</p>
+
+                <p class="footcredits" style="padding-bottom:50px;">Upozornění: Veškeré případné nepřesnosti a chyby jdou na vrub autorů, stejně jako
+                    názory a tvrzení ve studii uvedené. Studie vznikla s podporou Akademie věd ČR v rámci Strategie AV
+                    21. Za cenné připomínky k pracovní verzi studie děkujeme Štěpánu Jurajdovi, Danielu Münichovi, Sergey Slobodyanovi, Šimonu Stiburkovi a Aleši Vlkovi.</p>
+
+            </div>
+        </div>
+
+        <div id="modalWrap" class="modalBackground">
+
+
+            <div id="modXXX" class="modal">
+                <div class="close" onclick="hideModal()"><img src="img/closeIcon3.svg" /></div>
+                <div class="modalBody">
+                    <h3>XXX</h3>
+                    <p>ZZZ</p>
+                </div>
+                <center><a onclick="hideModal()" class="button buttonActive">Skrýt</a></center>
+            </div>
+
+
+            <div id="modLiterature" class="modal">
+                <div class="close" onclick="hideModal()"><img src="img/closeIcon3.svg" /></div>
+                <div class="modalBody">
+                    <h3>Literatura</h3>
+                    <ul>
+                        <li><span class="citNames">Čsú (2018) </span>Ukazatele VaV za vládní a vysokoškolský sektor. Ukazatele výzkumu a vývoje - 2017
+                            <a href="https://www.czso.cz/csu/czso/3-ukazatele-vav-za-vladni-a-vysokoskolsky-sektor-00s6i7s5qu" target="_blank">https://www.czso.cz/csu/czso/3-ukazatele-vav-za-vladni-a-vysokoskolsky-sektor-00s6i7s5qu</a>
+                        </li>
+                </div>
+                <center><a onclick="hideModal()" class="button buttonActive">Skrýt</a></center>
+            </div>
+        <div id="modRozliseni" class="modal">
+            <div class="modalBody">
+                <h3>Nízké rozlišení</h3>
+                <p>Interaktivní aplikace není vhodná pro mobilní telefony. Studii doporučujeme zobrazit na stolním počítači, notebooku či většině tabletů.
+                    Případně zkuste prohlížeč maximalizovat.</p>
+                <p>Máte-li vhodné zařízení, maximalizujte obrazovku a&nbsp;aktualizujte stránku (F5).</p>
+                <p>Chcete-li si čtení nechat na později, zkuste si zkopírovat internetovou adresu a&nbsp;pošlete si ji na svůj osobní počítač.</p> 
+                <div style="margin:30px;">
+                    <input type="text" value="" id="myurl2">
+
+                    <button onclick="copyLink('myurl2','linkCopied2')" class="button buttonActive">Zkopírovat</button>
+                    <span id="linkCopied2" class="linkCopied">Odkaz zkopírován</span>
+                </div>
+                <center><a onclick="hideModal()" class="button buttonActive">Skrýt</a></center>
+
+            </div>
+        </div>        
+            <div id="modCopyLink" class="modal">
+                <div class="close" onclick="hideModal()"><img src="img/closeIcon3.svg" /></div>
+                <div class="modalBody">
+                    <h3>Zkopírovat odkaz</h3>
+                    <div style="margin:30px;">
+                        <input type="text" value="" id="myurl">
+
+                        <button onclick="copyLink('myurl','linkCopied')" class="button buttonActive"> Zkopírovat</button>
+                        <span id="linkCopied" class="linkCopied">Odkaz zkopírován</span>
+                    </div>
+                    <center><a onclick="hideModal()" class="button buttonActive">Skrýt</a></center>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+</html>
