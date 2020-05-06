@@ -23,23 +23,21 @@
     <link href="//fonts.googleapis.com/css?family=Nunito+Sans&amp;subset=latin-ext" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
     <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
 
-
-
     <!-- own scripts -->
     <script type="text/javascript" src="js/chart.js"></script>
     <script type="text/javascript" src="js/controls.js"></script>
+    <script type="text/javascript" src="js/controls_data.js"></script>
+    <script type="text/javascript" src="js/data.js"></script>
     <script type="text/javascript" src="js/page.js"></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="css/chart.css">
-    </link>
-    <link rel="stylesheet" type="text/css" href="css/page.css">
-    </link>
+    <link rel="stylesheet" type="text/css" href="css/page.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/chart.css"></link>
 </head>
 
 <body onload="loadJS()">
@@ -52,13 +50,12 @@
                 <p style="font-size:calc(15px + .7vh);">Jan Smyčka, Luděk Berec a kol.</p>
                 <div id="logos">
                     <a href="https://idea.cerge-ei.cz/" target="_blank"><img src="img/idea-white2.svg" class="logo" /></a>
-                    <a href="http://av21.avcr.cz/" target="_blank"><img src="img/strategie_red_white.svg" class="logo" /></a>
                 </div>
 
                 <p style="line-height: .5">Think-tank IDEA při CERGE-EI</p>
                 <p style="line-height: .5">Studie č. X/2020</p>
                 <p style="line-height: .5">Květen 2020</p>
-                <br />
+                <!-- <br /> -->
                 <img src="img/down-arrow2.svg" onclick="MoveOn('context')" class='arrow' title="Posunujte kolečkem myši dolů" />
 
             </div>
@@ -71,11 +68,11 @@
                 <center>
                     <a id="mIntro" onclick="MoveOn('context')">Úvod</a>
                     <a id="mapp" onclick="MoveOn('empt-app')">Baseline</a>
-                    <a id="mSchools" onclick="MoveOn('school-close')">Uzavření škol</a>
-                    <a id="mSeniors" onclick="MoveOn('senior-isolation')">Izolace seniorů</a>
+                    <a id="mNormal" onclick="MoveOn('back-to-normal')">Návrat k normálu</a>
+                    <a id="mSchools" onclick="MoveOn('open-schools')">Otevření škol</a>
                 </center>
             </div>
-            <a class="corner" id="strategyav" href="http://av21.avcr.cz/" target="_blank"><img src="img/GolemioGrey.png" height="37" width="106" /></a>
+            <a class="corner" id="strategyav" href="https://www.golemio.cz/" target="_blank"><img src="img/GolemioGrey.png" /></a>
 
         </div>
         <div id="menuempty"></div>
@@ -84,6 +81,8 @@
                 <h3>Úvod</h3>
                 <p>Co to je za model?</p>
                 <p>Co ten model neumí? Předpovídat budoucnost</p>
+                <p>Sem patří dostatečně dlouhý text, který zabere celou obrazovku i na větších monitorech, protože zatímco probíhá tato obrazovka, tak se za ním překlikne úvodní obrazovka na interaktivní graf.</p>
+                <p>Pro vysvětlení technických detailů, kterými nechcete obtěžovat čtenáře se nabízí <a class="modalLink" onclick="showModal('modPopup')">vyskakovací okna</a>.</p>
             </div>
         </div>
         <div id="app" class="fix fullscreen">
@@ -93,27 +92,41 @@
         </div>
         <div id="empt-app" class="fixempty fullscreen"></div>
         <div class="fixempty fullscreen"></div>
-
-        <div id="school-close" class="flow flowtext">
+        <div id="empt-findings" class="fullscreen">
             <div class="content">
-                <h3>Uzavření škol</h3>
+                <div id="findings" class="box whitebox draggable">
+                    <div class="dragbutton"><img src="img/move.svg" width="20" height="20" /></div>
+                    <h4>Základní scénář</h4>
+                    <p>Čtenáři můžeme nabídnout i rychlý popisek grafu ve chvíli kdy na něj vidí.</p>
+                    <p>Takový textík by neměl být dlouhý.</p>
+                    <p class='tip'>Tip: V nejhorším si ale čtenář může okno posunout stranou tak, aby mu při čtení nepřekáželo.</p>
+                </div>
             </div>
         </div>
-        <div id="empt-school-close" class="fixempty fullscreen"></div>
+        <div id="empt-results" class="fixempty fullscreen"></div>
 
-        <div id="senior-isolation" class="flow flowtext">
+
+        <div id="back-to-normal" class="flow flowtext">
             <div class="content">
-                <h3>Izolace seniorů</h3>
+                <h3>Zpátky k normálu</h3>
+                <p>Při scrollování vizualizace přepíná mezi jednotlivými scénáři. Přirozeně, že tento typ interakce lze nastavit pro jakoukoliv měnitelnou položku i jejich kombinaci.</p>
+                <p>Ve chvíli kdy přepneme na jiný scénář, tak je potřeba popsat co se tedy vlastně změnilo, jak daná změna proběhla atp.</p>
             </div>
         </div>
-        <div id="empt-senior-isolation" class="fixempty fullscreen"></div>
+        <div id="empt-back-to-normal" class="fixempty fullscreen"></div>
+
+        <div id="open-schools" class="flow flowtext">
+            <div class="content">
+                <h3>Otevření škol</h3>
+            </div>
+        </div>
+        <div id="empt-open-schools" class="fixempty fullscreen"></div>
     
         <div id="thanks" class="flow">
             <div class="content">
                 <h1 id="title">Děkujeme za pozornost!</h1>
 
                 <a href="https://idea.cerge-ei.cz/" target="_blank"><img src="img/IDEA_greybcg.svg" class="logo" /></a>
-                <a href="http://av21.avcr.cz/" target="_blank"><img src="img/Logo_Strategie_V3m.svg" class="logo" /></a>
                 <h2 id="subtitle">Pokud se Vám to líbilo, nezapomeňte se o to podělit s ostatními!</h2>
 
 
@@ -131,25 +144,22 @@
 
                 <!-- <p class="footcredits">Seznam použité literatury je k dispozici <a class="modalLink" onclick="showModal('modLiterature')">zde</a>.</p> -->
 
-                <p class="footcredits">Doporučená citace: <a class="modalLink" onclick="showModal('modMy')">Macháček, V. a
-                        Srholec, M.</a> (2020) Odkud se rekrutují výzkumníci na univerzitách? Studie 1/2020.
+                <p class="footcredits">Doporučená citace: <a class="modalLink" onclick="showModal('modMy')">Jan Smyčka, Luděk Berec a kol.</a> (2020) Důsledky uvolňování a utahování opatření proti šíření COVID-19 - Model antiCOVID-19 IDEA? Studie X/2020.
                     Think-tank IDEA při NHÚ AV ČR.</p>
 
                 <p class="footcredits" style="padding-bottom:50px;">Upozornění: Veškeré případné nepřesnosti a chyby jdou na vrub autorů, stejně jako
-                    názory a tvrzení ve studii uvedené. Studie vznikla s podporou Akademie věd ČR v rámci Strategie AV
-                    21. Za cenné připomínky k pracovní verzi studie děkujeme Štěpánu Jurajdovi, Danielu Münichovi, Sergey Slobodyanovi, Šimonu Stiburkovi a Aleši Vlkovi.</p>
+                    názory a tvrzení ve studii uvedené. Za cenné připomínky k pracovní verzi děkujeme defacto celému světu.</p>
 
             </div>
         </div>
 
         <div id="modalWrap" class="modalBackground">
-
-
-            <div id="modXXX" class="modal">
+            <div id="modPopup" class="modal">
                 <div class="close" onclick="hideModal()"><img src="img/closeIcon3.svg" /></div>
                 <div class="modalBody">
-                    <h3>XXX</h3>
-                    <p>ZZZ</p>
+                    <h3>Vyskakovací okna</h3>
+                    <p>Sem se krásně schovají nejrůznější technické informace, které běžného čtenáře ani za mák netrápí,
+                         ale správný a čestný akademik neusne, pokud čtenáři nenabídne možnost je do detailu nastudovat.</p>
                 </div>
                 <center><a onclick="hideModal()" class="button buttonActive">Skrýt</a></center>
             </div>

@@ -16,7 +16,7 @@ RUN python -m pip install -r requirements.txt
 WORKDIR /app
 ADD ./flask/ /app
 # ADD ./static/ /static
-ADD ./sample_json/ /sample_json
+# ADD ./sample_json/ /sample_json
 
 
 # Switching to a non-root user, please refer to https://aka.ms/vscode-docker-python-user-rights

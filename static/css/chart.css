@@ -1,0 +1,40 @@
+#chartcontainer {
+    margin:auto;
+    width:100vw;
+    height:100vh;
+    padding-top:8vh;
+}
+
+#controls {
+    display:flex;
+    justify-content: center;
+    height:6vh;
+}
+
+.ddl {
+    width:20%;
+    margin-right:10px;
+    height:100%;
+}
+
+
+#LineChartCont {
+    display: flex;
+    justify-content: center;
+}
+
+svg {
+    /* background-color: #ddd; */
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 2px;
+    font-weight: bold;
+    border: 0px;
+    border-radius: 4px;
+    pointer-events: none;
+    padding:4px;
+    z-index: 99;
+}

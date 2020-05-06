@@ -10,6 +10,10 @@ function loadJS() {
     dragify();
     checkResolution();
     shareLinks();
+
+    generateControls('#chartcontainer');
+    drawLineChart('#chartcontainer');
+
 }
 
 function shareLinks() {
@@ -104,12 +108,12 @@ function waypointing() {
         },
         offset: '17%'
     });
-    waypoints = $('#school-close').waypoint({
+    waypoints = $('#back-to-normal').waypoint({
         handler: function handler(direction) {
             if (direction === 'down') {
-                $('#mSchools').addClass('storyPast');
+                $('#mNormal').addClass('storyPast');
             } else {
-                $('#mSchools').removeClass('storyPast');
+                $('#mNormal').removeClass('storyPast');
             }
         },
         offset: '17%'
@@ -125,12 +129,30 @@ function waypointing() {
         offset: '17%'
     }); // CHART INTERACTIONS
 
-    waypoints = $('#conclusion').waypoint({
-        handler: function handler(direction) {
-            if (direction === 'down') {} else {}
-        },
-        offset: '60%'
-    });
+    waypoints = $('#back-to-normal').waypoint(function(direction) {
+        if(direction === 'down') {
+            $('#scenario.ddl select').val('simintendnret').trigger('change',[false]);
+            $('#variable.ddl select').val('Reported').trigger('change',[true]);
+        } else {
+            $('#scenario.ddl select').val('simint').trigger('change',[false]);
+            $('#variable.ddl select').val('Reported').trigger('change',[true]);
+        }
+    },        {offset:'60%'}
+);
+
+waypoints = $('#open-schools').waypoint(function(direction) {
+    if(direction === 'down') {
+        $('#scenario.ddl select').val('simintendschool').trigger('change',[false]);
+        $('#variable.ddl select').val('Reported').trigger('change',[true]);
+    } else {
+        $('#scenario.ddl select').val('simintendnret').trigger('change',[false]);
+        $('#variable.ddl select').val('Reported').trigger('change',[true]);
+    }
+},        {offset:'60%'}
+);
+
+
+
     return waypoints;
 }
 
