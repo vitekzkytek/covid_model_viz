@@ -7,13 +7,20 @@ var fbLink = 'https://www.facebook.com/ideacerge/posts/997690760422768/'; //TODO
 
 function loadJS() {
     waypoints = waypointing();
+    
     dragify();
+    
     checkResolution();
+    
     shareLinks();
-
+    
+    generateContactTables();
+    
     generateControls('#chartcontainer');
+    
     drawLineChart('#chartcontainer');
 
+    draw_runsim('#simcontainer')
 }
 
 function shareLinks() {
@@ -37,32 +44,7 @@ function checkResolution() {
 }
 
 function waypointing() {
-    function activatefix(selector) {
-        $('.fixactive').removeClass('fixactive');
-        $(selector).addClass('fixactive');
-    }
-
-    ;
-
-    function fixBox(selector, parent, target, toppos) {
-        var element = $(parent + ' ' + selector).detach();
-        $(target).append(element);
-        $(target + ' ' + selector).css({
-            top: toppos,
-            'box-shadow': '0 0 0 0'
-        });
-    }
-
-    function floatBox(selector, parent, target) {
-        var element = $(parent + ' ' + selector).detach();
-        $(target).append(element);
-        $(element).css({
-            top: '0px',
-            'box-shadow': '0px 0px 20px 4px #d1d4d3'
-        });
-    } // fixing menu and adding shadow
-
-
+    //FIXING AND FLOATING MENU
     waypoints = $('#menu').waypoint(function (direction) {
         if (direction === 'down') {
             $('#everything').append($('<div class="stickyshadow"></div>'));
@@ -75,59 +57,53 @@ function waypointing() {
             $('#menuempty').css('display', 'none');
             $('.stickyshadow').remove();
         }
-    }); // MENU INTERACTIONS
-
-    waypoints = $('#context').waypoint({
-        handler: function handler(direction) {
-            if (direction === 'down') {
-                $('#mIntro').addClass('storyPast');
-            } else {
-                $('#mIntro').removeClass('storyPast');
-            }
-        },
-        offset: '17%'
-    });
-    waypoints = $('#context').waypoint(function (direction) {
-        if (direction === 'down') {
-            activatefix('#app');
-        } else {
-            activatefix('#intro');
-        }
-    });
-    waypoints = $('#empt-app').waypoint({
-        handler: function handler(direction) {
-            if (direction === 'down') {
-                $('#mapp').addClass('storyPast');
-
-                if (!$('#help').hasClass('rotate')) {
-                    $('#help').addClass('rotate');
+    }); 
+    
+    //MENU READING PROGRES BARS
+    function addMenuProgressTrigger(trigger_id,menu_id,offset='17%',progress_class='storyPast') {
+        return $('#' + trigger_id).waypoint({
+            handler: function handler(direction) {
+                if (direction === 'down') {
+                    $('#' + menu_id).addClass(progress_class);
+                } else {
+                    $('#' + menu_id).removeClass(progress_class);
                 }
-            } else {
-                $('#mapp').removeClass('storyPast');
-            }
-        },
-        offset: '17%'
-    });
-    waypoints = $('#back-to-normal').waypoint({
-        handler: function handler(direction) {
+            },
+            offset: offset
+        });
+    }
+    addMenuProgressTrigger('context','mIntro');
+
+
+    // Switching backgrounds
+    function addBackgroundTrigger(trigger_id,down_id,up_id) {
+        function activatefix(selector) {
+            $('.fixactive').removeClass('fixactive');
+            $(selector).addClass('fixactive');
+        };
+
+        $('#'+trigger_id).waypoint(function(direction) {
             if (direction === 'down') {
-                $('#mNormal').addClass('storyPast');
+                activatefix('#' + down_id)
             } else {
-                $('#mNormal').removeClass('storyPast');
+                activatefix('#' + up_id)
             }
-        },
-        offset: '17%'
-    });
-    waypoints = $('#senior-isolation').waypoint({
-        handler: function handler(direction) {
-            if (direction === 'down') {
-                $('#mSeniors').addClass('storyPast');
-            } else {
-                $('#mSeniors').removeClass('storyPast');
-            }
-        },
-        offset: '17%'
-    }); // CHART INTERACTIONS
+        })
+    }
+    addBackgroundTrigger('context','school_bcg','intro');
+    addBackgroundTrigger('work','work_bcg','school_bcg');
+    addBackgroundTrigger('other','other_bcg','work_bcg');
+    addBackgroundTrigger('home','home_bcg','other_bcg');
+    addBackgroundTrigger('mask','mask_bcg','home_bcg');
+    addBackgroundTrigger('region','region_bcg','mask_bcg');
+    addBackgroundTrigger('sim','sim_bcg','region_bcg');
+
+    $('#sim').waypoint(function(direction) {
+        if (direction === 'down') {
+            refresh_image_opacity();
+        }
+    })
+
 
     waypoints = $('#back-to-normal').waypoint(function(direction) {
         if(direction === 'down') {
@@ -151,12 +127,8 @@ waypoints = $('#open-schools').waypoint(function(direction) {
 },        {offset:'60%'}
 );
 
-
-
     return waypoints;
-}
-
-;
+};
 
 function showCopyLink() {
     $('#myurl').val(shareLink);

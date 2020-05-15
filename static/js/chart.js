@@ -163,9 +163,16 @@ function drawLine(json,variable,scenario,baseline,baseline_color,policy_color) {
 
 function drawLegend(baseline_scenario,policy_scenario,baseline_color,policy_color){
     let g_legend = lcg.g_legend;
-    
+    let legend_data;
+    if (baseline_scenario != policy_scenario) {
+        legend_data = [{id:policy_scenario,color:policy_color},{id:baseline_scenario,color:baseline_color}]
+    } else {
+        legend_data = [{id:policy_scenario,color:policy_color}]
+    }
+
+
     let single_legend = g_legend.selectAll('g')
-        .data([{id:policy_scenario,color:policy_color},{id:baseline_scenario,color:baseline_color}])
+        .data(legend_data)
         .enter()
         .append('g')
         .attr('id',function(d) {

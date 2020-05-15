@@ -5,6 +5,12 @@ function generateJsonSamplePromises(policy_scenario, baseline_scenario) {
     return [baseline_ajax,policy_ajax]
 }
 
+function generateJsonContactTablesPromise() {
+    return $.getJSON('/contact_matrices')
+}
+
+
+
 function process_series(series) {
     let dates = series['dates'];
     let values = series['values'];

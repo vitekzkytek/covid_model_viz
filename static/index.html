@@ -26,6 +26,8 @@
     <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
 
     <!-- own scripts -->
@@ -34,18 +36,22 @@
     <script type="text/javascript" src="js/controls_data.js"></script>
     <script type="text/javascript" src="js/data.js"></script>
     <script type="text/javascript" src="js/page.js"></script>
+    <script type="text/javascript" src="js/contact_table.js"></script>
+    <script type="text/javascript" src="js/runsim.js"></script>
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="css/page.css"></link>
     <link rel="stylesheet" type="text/css" href="css/chart.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/contact_table.css"></link>
+
 </head>
 
 <body onload="loadJS()">
     <div id="everything">
         <div id="intro" class="fix fullscreen fixactive">
             <div class="content">
-                <h1 id="title">Důsledky uvolňování a utahování opatření proti šíření COVID-19</h1>
-                <h2 id="subtitle">Vizualizace modelu B iniciativy antiCOVID-19 pro ČR (s regionální strukturou a třemi generacemi)</h2>
+                <h1 id="title">Jak se u nás bude mít Covid-19 za osmdesát dní?</h1>
+                <h2 id="subtitle">Co všechno se může stát za 80 dní? Phileas Fogg objel za 80 dní svět, kdyby vyjel z Česka dnes, kam by se vrátil?</h2>
 
                 <p style="font-size:calc(15px + .7vh);">Jan Smyčka, Luděk Berec a kol.</p>
                 <div id="logos">
@@ -73,55 +79,295 @@
                 </center>
             </div>
             <a class="corner" id="strategyav" href="https://www.golemio.cz/" target="_blank"><img src="img/GolemioGrey.png" /></a>
-
         </div>
         <div id="menuempty"></div>
         <div id="context" class="flow flowtext">
             <div class="content">
-                <h3>Úvod</h3>
-                <p>Co to je za model?</p>
-                <p>Co ten model neumí? Předpovídat budoucnost</p>
-                <p>Sem patří dostatečně dlouhý text, který zabere celou obrazovku i na větších monitorech, protože zatímco probíhá tato obrazovka, tak se za ním překlikne úvodní obrazovka na interaktivní graf.</p>
-                <p>Pro vysvětlení technických detailů, kterými nechcete obtěžovat čtenáře se nabízí <a class="modalLink" onclick="showModal('modPopup')">vyskakovací okna</a>.</p>
+                <h3>Kolik lidí potkáš, tolik jich můžeš i nakazit</h3>
+                <p>Covid-19 se přenáší z jednoho člověka na druhého. Kdybychom věděli, kdo z nás koho v příštích 80 dnech potká (a jak mu bude blízko :-), 
+                    uměli bychom i přesně popsat průchod Covidu-19 českou populací. To samozřejmě nevíme. Máme jen hrubá sociologická data, víme,
+                     kolik lidí z různých věkových skupin potk
+                     á průměrný člověk v závislosti na tom, kde se pohybuje. V naší <a class="modalLink" onclick="showModal('modSimulation')">simulaci</a> Vám tato čísla nabídneme 
+                     - a na vás bude, abyste se rozhodli kde a jak se budou v naší simulaci (hře) lidé pohybovat. Zkuste nám říci, jak si myslíte, že se budou chovat:</p>
+                <ul>
+                    <li>děti (0 - 19 let)</li>
+                    <li>dospělí (20 - 64 let)</li>
+                    <li>senioři (65 a více let)</li>
+                </ul>
+                <p>v příštích 80 dnech a my vám odpovíme jaký vývoj epidemie COVID-19 můžeme očekávat. Zahrajte si s námi na ředitele České republiky a v následujících šesti krocích si vytvořte svůj vlastní epidemiologický plán.</p>
+                <h3>Krok 1: Škola</h3>
+                <p>Chcete otevřít školy nebo ne? Počet denních kontaktů ve škole mezi třemi věkovými skupinami, které jsou v našem modelu udává následující tabulka:</p>
             </div>
         </div>
-        <div id="app" class="fix fullscreen">
-            <div id="chartcontainer">
+        <div id="school_bcg" class="fix fullscreen">
+            <div class="content">
+                <div class="table_container">
+                    <h3>Kolik lidí potkáme ve škole?</h3>
+
+                </div>
+                <h4>Senioři:</h4>
+                <div class="switch_container">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="checkbox round"></span>
+                        </label><span class="switch_label">Učitelé v důchodovém věku budou do školy docházet osobně</span>
+                </div>
 
             </div>
         </div>
-        <div id="empt-app" class="fixempty fullscreen"></div>
         <div class="fixempty fullscreen"></div>
-        <div id="empt-findings" class="fullscreen">
+        <div id="empt-school_bcg" class="fullscreen">
             <div class="content">
-                <div id="findings" class="box whitebox draggable">
+                <div class="box whitebox draggable">
                     <div class="dragbutton"><img src="img/move.svg" width="20" height="20" /></div>
-                    <h4>Základní scénář</h4>
-                    <p>Čtenáři můžeme nabídnout i rychlý popisek grafu ve chvíli kdy na něj vidí.</p>
-                    <p>Takový textík by neměl být dlouhý.</p>
-                    <p class='tip'>Tip: V nejhorším si ale čtenář může okno posunout stranou tak, aby mu při čtení nepřekáželo.</p>
+                    <h4>Jak tuto tabulku číst?</h4>
+                    <p>Podívejme se třeba do třetího řádku a druhého sloupku, vidíme tam číslo x. 
+                    To znamená, že ve škole má v celkovém průměru každé dítě x denních kontaktů s dospělým. 
+                    Chcete-li se vrátit do standardního stavu před epidemií nastavte slider pod tabulkou na číslo 1. 
+                    Pokud chcete nechat školy zavřené, nastavte číslo nula. </p>
+
+                    <p>Pokud chcete školy otevřít v nějakém omezeném režimu (menší skupiny a podobně), nastavte slider
+                    na libovolné číslo mezi nulou a jedničkou, čím nižší číslo nastavíte, tím bude docházet k nižšímu počtu kontaktů.</p>
                 </div>
             </div>
         </div>
-        <div id="empt-results" class="fixempty fullscreen"></div>
-
-
-        <div id="back-to-normal" class="flow flowtext">
+        <div class="fixempty fullscreen"></div>
+        <div id="empt2-school_bcg" class="fullscreen">
             <div class="content">
-                <h3>Zpátky k normálu</h3>
-                <p>Při scrollování vizualizace přepíná mezi jednotlivými scénáři. Přirozeně, že tento typ interakce lze nastavit pro jakoukoliv měnitelnou položku i jejich kombinaci.</p>
-                <p>Ve chvíli kdy přepneme na jiný scénář, tak je potřeba popsat co se tedy vlastně změnilo, jak daná změna proběhla atp.</p>
+                <div class="box whitebox draggable">
+                    <div class="dragbutton"><img src="img/move.svg" width="20" height="20" /></div>
+                    <p>Platí toto nastavení i pro seniory? Pokud chcete školy (třeba jen částečně) otevřít, ale učitele v důchodovém věku do nich nepouštět, zaškrtněte následující políčko:
+                    </p>
+                </div>
             </div>
         </div>
-        <div id="empt-back-to-normal" class="fixempty fullscreen"></div>
+        <div class="fixempty fullscreen"></div>
 
-        <div id="open-schools" class="flow flowtext">
+        <div id="work" class="flow flowtext">
             <div class="content">
-                <h3>Otevření škol</h3>
+                <h3>Krok 2: Zaměstnání</h3>
+                <p>Mají lidé pracovat na svých pracovištích nebo doporučujete, aby své povinnosti plnili formou home-office? Počet denních kontaktů na PRACOVIŠTI mezi třemi věkovými skupinami, které jsou v našem modelu udává následující tabulka
+                </p>
             </div>
         </div>
-        <div id="empt-open-schools" class="fixempty fullscreen"></div>
-    
+        <div id="work_bcg" class="fix fullscreen">
+            <div class="content">
+                <div class="table_container">
+                    <h3>Kolik lidí potkáme v práci?</h3>
+
+                </div>
+                <h4>Senioři:</h4>
+                <div class="switch_container">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="checkbox round"></span>
+                        </label><span class="switch_label">Pracující důchodci nechodí fyzicky na pracoviště a zůstávají v home-office</span>
+                </div>
+            </div>
+        </div>
+        <div class="fixempty fullscreen"></div>
+
+        <div id="empt-work_bcg" class="fullscreen">
+            <div class="content">
+                <div class="box whitebox draggable">
+                    <div class="dragbutton"><img src="img/move.svg" width="20" height="20" /></div>
+                    <h4>Jak tuto tabulku číst?</h4>
+                    <p>Podívejme se třeba do druhého řádku a prvního sloupku, vidíme tam číslo y. To znamená, že na pracovišti má v celkovém
+                         průměru každý dospělý x denních kontaktů se seniorem. Chcete-li se vrátit do standardního stavu před epidemií nastavte
+                          slider pod tabulkou na číslo 1. Pokud chcete, aby všichni pracovali v home-office nastavte číslo nula.</p>
+                    <p> Pokud chcete,
+                           aby byli zaměstnanci na pracovištích jen v omezeném režimu (například pouze v některých odvětvích), nastavte slider 
+                           na libovolné číslo mezi nulou a jedničkou, čím nižší číslo nastavíte, tím bude docházet k nižšímu počtu kontaktů.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="fixempty fullscreen"></div>
+
+        <div id="empt2-work_bcg" class="fullscreen">
+            <div class="content">
+                <div class="box whitebox draggable">
+                    <div class="dragbutton"><img src="img/move.svg" width="20" height="20" /></div>
+                    <p>Platí toto nastavení i pro seniory? Pokud chcete školy, aby aktivní senioři pracovali pouze doma, zaškrtněte následující políčko:
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="fixempty fullscreen"></div>
+
+
+        <div id="other" class="flow flowtext">
+            <div class="content">
+                <h3>Krok 3: Jinde mimo domov</h3>
+                <p>Do jaké míry chcete, aby se lidé věnovali dalším aktivitám, sportu, nákupům atd.? Počet denních kontaktů během OSTATNÍCH AKTIVIT mezi 
+                    třemi věkovými skupinami, které jsou v našem modelu udává následující tabulka</p>
+            </div>
+        </div>
+        <div id="other_bcg" class="fix fullscreen">
+            <div class="content">
+                <div class="table_container">
+                    <h3>Kolik lidí potkáme na dalších cestách?</h3>
+
+                </div>
+                <h4>Senioři:</h4>
+                <div class="switch_container">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="checkbox round"></span>
+                        </label><span class="switch_label">Senioři se nevěnují sportu, sami nechodí fyzicky nakupovat ani k lékaři, jsou pouze doma.</span>
+                </div>
+
+            </div>
+        </div>
+        <div class="fixempty fullscreen"></div>
+
+        <div id="empt-other_bcg" class="fullscreen">
+            <div class="content">
+                <div class="box whitebox draggable">
+                    <div class="dragbutton"><img src="img/move.svg" width="20" height="20" /></div>
+                    <h4>Jak tuto tabulku číst?</h4>
+                    <p>Podívejme se třeba do prvního řádku a třetího sloupku, vidíme tam číslo z. 
+                        To znamená, že na pracovišti má v celkovém průměru každý senior z denních kontaktů s dětmi. 
+                        Chcete-li se vrátit do standardního stavu před epidemií nastavte slider pod tabulkou na číslo 1. </p>
+                        
+                    <p>Pokud chcete, aby se ostatním aktivitám nikdo nevěnoval, nastavte číslo nula. 
+                        Pokud chcete, aby se lidé věnovali ostatním aktivitám jen  v omezeně (například nakupovali on-line apod.), 
+                        nastavte slider na libovolné číslo mezi nulou a jedničkou, čím nižší číslo nastavíte, tím bude docházet k nižšímu počtu kontaktů.</p>
+                </div>
+            </div>
+        </div>
+        <div class="fixempty fullscreen"></div>
+
+        <div id="empt2-other_bcg" class="fullscreen">
+            <div class="content">
+                <div class="box whitebox draggable">
+                    <div class="dragbutton"><img src="img/move.svg" width="20" height="20" /></div>
+                    <p>Platí toto nastavení i pro seniory? Pokud chcete, aby senioři zcela omezili své ostatní aktivity, zaškrtněte následující políčko.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="fixempty fullscreen"></div>
+
+
+        <div id="home" class="flow flowtext">
+            <div class="content">
+                <h3>Krok 4: Doma</h3>
+                <p>Do této chvíle jsme pouze omezovali počet kontaktů jednotlivých věkových skupin. Čím budou tyto kontakty nahrazeny? 
+                    Budou se v čase, který lidé ušetří omezením svých školních, pracovních i volnočasových aktivit více setkávat doma? 
+                    Počet denních kontaktů v DOMÁCNOSTI mezi třemi věkovými skupinami, které jsou v našem modelu udává následující tabulka</p>
+            </div>
+        </div>
+        <div id="home_bcg" class="fix fullscreen">
+            <div class="content">
+                <div class="table_container">
+                    <h3>Kolik lidí potkáme doma?</h3>
+
+                </div>
+                <h4>Senioři:</h4>
+                <div class="slider_cont">
+                    <div class="slider" id="senior_slider">
+                        <div class="ui-slider-handle" id="custom-handle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fixempty fullscreen"></div>
+
+        <div id="empt-home_bcg" class="fullscreen">
+            <div class="content">
+                <div class="box whitebox draggable">
+                    <div class="dragbutton"><img src="img/move.svg" width="20" height="20" /></div>
+                    <h4>Jak tuto tabulku číst?</h4>
+                    <p>Podívejme se třeba do prvního řádku a prvního sloupku, vidíme tam číslo w. To znamená, že doma má v celkovém průměru 
+                        každý senior w denních kontaktů s dalším seniorem. Chcete-li ponechat počet kontaktů ve standardním stavu před epidemií 
+                        nastavte slider pod tabulkou na číslo 1. </p>
+                    <p>Pokud se domníváte, že omezením aktivit ve "vnějším světě" vzroste intenzita kontaktů v domácnosti, nastavte číslo vyšší,
+                         maximálně však číslo 2, které znamená, že počet kontaktů uvnitř domácnosti vzroste na dvojnásobek standardního stavu. 
+                         Výsledně tedy nastavte libovolné číslo mezi 1 a 2, stejně jako v předchozích prostředích i zde platí, že čím nižší číslo 
+                         nastavíte, tím bude docházet k nižšímu počtu kontaktů.</p>
+                </div>
+            </div>
+        </div>
+        <div class="fixempty fullscreen"></div>
+
+        <div id="empt-home2_bcg" class="fullscreen">
+            <div class="content">
+                <div class="box whitebox draggable">
+                    <div class="dragbutton"><img src="img/move.svg" width="20" height="20" /></div>
+                    <p>Pokud jste zaškrtli NE a chcete, aby senioři v domácnosti nijak nezvyšovali počet svých kontaktů, nebo dokonce snížili i svůj počet kontaktů v domácnosti, nastavte následující slider na číslo mezi nula a jedna. Podobně jako v předchozím znamená 1 standardní stav, 0 naprostou izolace seniorů i v domácnosti. Nastavíte-li pro seniory číslo mezi 0 a 1 platí i zde, že čím nižší číslo nastavíte, tím bude docházet k nižšímu počtu kontaktů.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <div class="fixempty fullscreen"></div>
+
+
+        <div id="mask" class="flow flowtext">
+            <div class="content">
+                <h3>Krok 5: Dodržování opatření</h3>
+                <p>Jak důsledně budou lidé dodržovat protektivní opatření? Zde máme na mysli nejen nošení roušek, ale i obecně zodpovědné chování 
+                    ve smyslu odstupů v běžném životě, hygienických opatření jako mytí rukou atd. Pokud si myslíte, že lidé budou dodržovat protektivní
+                     opatřeni "na maximum", tedy tak jako v polovině dubna, nastavte číslo 1. Pokud se naopak domníváte, že lidé protektivní opatření
+                      dodržovat nebudou a vrátí se do standardního času, nastavte číslo 0. Samozřejmě můžete nastavit libovolné číslo mezi 0 a 1, 
+                      čím vyšší číslo, tím vyšší ukázněnost a zodpovědnost lidí předpokládáte. Vysoké číslo znamená v našem modelu vysokou ochranu sebe i 
+                      ostatních a tedy nižší intenzitu jednotlivých kontaktů a nižší přenos viru.</p>
+            </div>
+        </div>
+        <div id="mask_bcg" class="fix fullscreen">
+            <div class="content">
+                <div class="table_container">
+                    <h3>Jak důsledně budou lidé dodržovat opatření?</h3>
+                    <div class='contact_table' style="height:30vh; vertical-align: middle;">
+                        <img src="img/mask.svg" />
+                        <div class="slider_cont">
+                            <div class="slider">
+                                <div id="custom-handle" class="ui-slider-handle"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="fixempty fullscreen"></div>
+
+        <div id="region" class="flow flowtext">
+            <div class="content">
+                <h3>Krok 6: Regionalita</h3>
+                <p>Chcete vaše opatření zavést ve všech 14 krajích v ČR? Ve standardním nastavení aplikujeme Vaše opatření ve všech krajích ČR,
+                     pokud tedy mají platit Vaše opatření v celé zemi, nezaškrtávejte žádný z krajů a běžte přímo na další obrazovku. </p>
+                <p>Pokud chcete, aby Vaše opatření NEBYLA aplikována v některém z krajů, pak ho zaškrtněte. V takovém kraji (či krajích) 
+                    pak budou dále platit pravidla, která jsou platná k dnešnímu dni (k 15. květnu). 
+                    Takový kraj (či kraje) budou odříznuty od oblastí, které zavedou Vaše pravidla. </p>
+                <p>Pokud zaškrtnete všech 14 krajů, pak Vaše opatření nebudou uplatněna nikde a epidemilogická situace v celé ČR poběží tak jako doposud.</p>
+            </div>
+        </div>
+        <div id="region_bcg" class="fix fullscreen">
+            <div class="content">
+                <div class="table_container">
+                    <h3>V jakých krajích mají opatření platit?</h3>
+                    <h4>TO BE IMPLEMENTED!</h4>
+                </div>
+            </div>
+        </div>
+        <div class="fixempty fullscreen"></div>
+        <div id="sim" class="flow flowtext">
+            <div class="content">
+                <h3>Simulace</h3>
+                <p></p>
+            </div>
+        </div>
+
+        <div id="sim_bcg" class="fix fullscreen">
+            <div class="content">
+                <div id="simcontainer"></div>
+                <div class="chartcontainer" style="display:none;"></div>
+            </div>
+        </div>
+        <div class="fixempty fullscreen"></div>
+
         <div id="thanks" class="flow">
             <div class="content">
                 <h1 id="title">Děkujeme za pozornost!</h1>
@@ -154,7 +400,7 @@
         </div>
 
         <div id="modalWrap" class="modalBackground">
-            <div id="modPopup" class="modal">
+            <div id="modSimulation" class="modal">
                 <div class="close" onclick="hideModal()"><img src="img/closeIcon3.svg" /></div>
                 <div class="modalBody">
                     <h3>Vyskakovací okna</h3>

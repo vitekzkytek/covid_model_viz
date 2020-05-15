@@ -17,6 +17,28 @@ def sample(scenario):
     else:
         return {'scenario':scenario, 'success':False,'error_msg':'File {} does not exist'.format(path)}
 
+@app.route('/contact_matrices')
+def contact_matrices():
+    path = '../json/contact_matrices.json'
+    if os.path.isfile(path):
+        d = json.load(open(path,'r'))
+        return {'success':True,'result':d}
+    else:
+        return {'success':False,'error_msg':'File {} does not exist'.format(path)}
+
+@app.route('/contact_matrices/<environment>')
+def contact_matrices_env(environment):
+    path = '../json/contact_matrices.json'
+    if os.path.isfile(path):
+        d = json.load(open(path,'r'))
+        if environment in d:
+            return {'environment':environment,'success':True,'result':d[environment]}
+        else:
+            return {'environment':environment,'success':False,'error_msg':'Environment {} is not available'.format(environment)}
+    else:
+        return {'scenario':scenario, 'success':False,'error_msg':'File {} does not exist'.format(path)}
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 

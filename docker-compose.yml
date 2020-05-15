@@ -9,5 +9,6 @@ services:
     volumes:
     - ./static:/static
     - ./sample_json:/sample_json
+    - ./json:/json
     ports:
       - 5000:5000
