@@ -24,6 +24,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -38,11 +39,14 @@
     <script type="text/javascript" src="js/page.js"></script>
     <script type="text/javascript" src="js/contact_table.js"></script>
     <script type="text/javascript" src="js/runsim.js"></script>
+    <script type="text/javascript" src="js/animation.js"></script>
+    <script type="text/javascript" src="js/map.js"></script>
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="css/page.css"></link>
     <link rel="stylesheet" type="text/css" href="css/chart.css"></link>
     <link rel="stylesheet" type="text/css" href="css/contact_table.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/map.css"></link>
 
 </head>
 
@@ -72,16 +76,19 @@
             <div class="content">
 
                 <center>
-                    <a id="mIntro" onclick="MoveOn('context')">Úvod</a>
-                    <a id="mapp" onclick="MoveOn('empt-app')">Baseline</a>
-                    <a id="mNormal" onclick="MoveOn('back-to-normal')">Návrat k normálu</a>
-                    <a id="mSchools" onclick="MoveOn('open-schools')">Otevření škol</a>
+                    <a id="mSchool" onclick="MoveOn('school')">Škola</a>
+                    <a id="mWork" onclick="MoveOn('work')">Práce</a>
+                    <a id="mOther" onclick="MoveOn('other')">Ostatní</a>
+                    <a id="mHome" onclick="MoveOn('home')">Doma</a>
+                    <a id="mMask" onclick="MoveOn('mask')">Dodržování</a>
+                    <a id="mSim" onclick="MoveOn('sim')">Simulace</a>
+
                 </center>
             </div>
             <a class="corner" id="strategyav" href="https://www.golemio.cz/" target="_blank"><img src="img/GolemioGrey.png" /></a>
         </div>
         <div id="menuempty"></div>
-        <div id="context" class="flow flowtext">
+        <div id="school" class="flow flowtext">
             <div class="content">
                 <h3>Kolik lidí potkáš, tolik jich můžeš i nakazit</h3>
                 <p>Covid-19 se přenáší z jednoho člověka na druhého. Kdybychom věděli, kdo z nás koho v příštích 80 dnech potká (a jak mu bude blízko :-), 
@@ -264,12 +271,6 @@
                     <h3>Kolik lidí potkáme doma?</h3>
 
                 </div>
-                <h4>Senioři:</h4>
-                <div class="slider_cont">
-                    <div class="slider" id="senior_slider">
-                        <div class="ui-slider-handle" id="custom-handle"></div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="fixempty fullscreen"></div>
@@ -327,8 +328,17 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
+                <h4>Senioři:</h4>
+                <div class="switch_container">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="checkbox round"></span>
+                        </label><span class="switch_label">Senioři budou opatření dodržovat obzvlášť důsledně</span>
+                </div>
+
+
+
             </div>
         </div>
         <div class="fixempty fullscreen"></div>
@@ -348,8 +358,9 @@
             <div class="content">
                 <div class="table_container">
                     <h3>V jakých krajích mají opatření platit?</h3>
-                    <h4>TO BE IMPLEMENTED!</h4>
-                </div>
+                    <h4>V TUTO CHVÍLI NENÍ IMPLEMENTOVÁNO. VE VŠECH KRAJÍCH PLATÍ VŠECHNA OPATŘENÍ</h4>
+                 </div>
+                <div id="regioncontainer"></div>
             </div>
         </div>
         <div class="fixempty fullscreen"></div>
@@ -363,7 +374,17 @@
         <div id="sim_bcg" class="fix fullscreen">
             <div class="content">
                 <div id="simcontainer"></div>
-                <div class="chartcontainer" style="display:none;"></div>
+                <div id="chartcontainer" style="display:none;">
+                    <div id="MapChartContainer">
+                        <div id="MapChartControls"></div>
+                        <h4 id="MapTitle"></h4>
+                        <div id="MapChart"></div>
+                        <div class="slider" id="map_slider">
+                            <div class="ui-slider-handle" id="custom-handle"></div>
+                        </div>
+    
+                    </div>    
+                </div>
             </div>
         </div>
         <div class="fixempty fullscreen"></div>

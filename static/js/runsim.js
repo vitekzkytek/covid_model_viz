@@ -1,12 +1,14 @@
-let img_size = 150;
-let x_img_spacing = 150;
-let y_img_spacing = 100;
-let sim_height = 800;
-let sim_width = 960;
-let env_images = [{env:'school',x:x_img_spacing,y:y_img_spacing},
+const img_size = 150;
+const x_img_spacing = 150;
+const y_img_spacing = 100;
+const sim_height = 800;
+const sim_width = 960;
+const env_images = [{env:'school',x:x_img_spacing,y:y_img_spacing},
                   {env:'work',x:sim_width-x_img_spacing-img_size,y:y_img_spacing},
                   {env:'other',x:x_img_spacing,y:sim_height-y_img_spacing-img_size},
                   {env:'home',x:sim_width-x_img_spacing-img_size,y:sim_height-y_img_spacing-img_size}];
+
+let received_data;
 
 function draw_runsim(selector) {
     let svg = d3.select(selector).append('svg')
@@ -89,5 +91,63 @@ function refresh_image_opacity() {
 }
 
 function run_simulation(){
+    let params = collect_parameters();
 
+    let promise = generateSimulationPromise(params);
+
+    launch_animation();
+    let nodots = 0;
+    let dots = ['.','..','...']
+
+    let t = d3.interval(function(elapsed) {
+        d3.select('#run_button text').text('Simuluje se '+dots[nodots]);
+        if (nodots < 2){nodots++;} else {nodots=0}
+    },1000)
+
+    d3.select('#run_button text').on('click', null).on('mouseover',null).on('mouseout',null).classed('hovered_button',false);
+    d3.select('#run_button rect').on('click', null).on('mouseover',null).on('mouseout',null).classed('hovered_button',false);
+
+    $.when(promise).then(function() {
+        modeldata = arguments[0]['result'];
+        stop_animation();
+        t.stop();
+        d3.select('#run_button text').text('Dosimulováno.');
+
+        //drawMapChart('#MapChartContainer',selected_variable,selected_date);
+        updateMapChart('#MapChartContainer',modeldata,selected_variable,selected_date)
+        hide_sim();
+        show_chart();
+    })
+}
+
+function hide_sim() {
+    $('#simcontainer').fadeOut(1000)
+}
+function show_chart() {
+    $('#chartcontainer').fadeIn(1000)
+}
+
+function collect_parameters() {
+    return {
+        school:{
+            'intensity':$('#school.slider').slider('option','value'),
+            'seniors':$('#school_bcg .checkbox').is(':checked')
+        },
+        work:{
+            'intensity':$('#work.slider').slider('option','value'),
+            'seniors':$('#work_bcg .checkbox').is(':checked')
+        },
+        other:{
+            'intensity':$('#other.slider').slider('option','value'),
+            'seniors':$('#other_bcg .checkbox').is(':checked')
+        },
+        home:{
+            'intensity':$('#home.slider').slider('option','value'),
+        },
+        mask:{
+            'intensity':$('#mask_bcg .slider').slider('option','value'),
+            'seniors':$('#other_bcg .checkbox').is(':checked')
+        },
+        regions:$('#regionselector path').toArray().map(x=>$(x).hasClass('active'))
+    }    
 }

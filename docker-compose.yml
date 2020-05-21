@@ -1,14 +1,17 @@
 version: '3.4'
 
 services:
-  flask_app:
+  covidmodelviz:
     image: covid_viz_flask:latest
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
-    - ./static:/static
-    - ./sample_json:/sample_json
-    - ./json:/json
+    - ./static:/app/static
+    - ./sample_json:/app/sample_json
+    - ./json:/app/json
+
     ports:
       - 5000:5000
+      - 5001:5001
+      - 5678:5678

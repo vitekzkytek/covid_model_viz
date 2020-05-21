@@ -1,5 +1,5 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.8
+FROM python:3.8-slim-buster
 
 EXPOSE 5000
 
@@ -15,13 +15,10 @@ RUN python -m pip install -r requirements.txt
 
 WORKDIR /app
 ADD ./flask/ /app
-# ADD ./static/ /static
-# ADD ./sample_json/ /sample_json
-
 
 # Switching to a non-root user, please refer to https://aka.ms/vscode-docker-python-user-rights
 RUN useradd appuser && chown -R appuser /app
 USER appuser
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app","-t","300","-w","4"]

@@ -1,8 +1,5 @@
-function generateJsonSamplePromises(policy_scenario, baseline_scenario) {
-    let policy_ajax = $.getJSON('/sample/' + policy_scenario)
-    let baseline_ajax = $.getJSON('/sample/' + baseline_scenario)
-
-    return [baseline_ajax,policy_ajax]
+function generateSamplePromise() {
+    return $.getJSON('/sample')
 }
 
 function generateJsonContactTablesPromise() {
@@ -10,13 +7,15 @@ function generateJsonContactTablesPromise() {
 }
 
 
+function generateSimulationPromise(params) {
+    return $.ajax({
+        type:"POST",
+        url:'/run_simulation',
+        data: JSON.stringify(params),
+        contentType:'application/json; charset=utf-8',
+        dataType:'json',
+    })
 
-function process_series(series) {
-    let dates = series['dates'];
-    let values = series['values'];
-    let result = [];
-    for (i in values) {
-        result.push({date:dates[i],value:values[i]});
-    }
-    return result;
+    //return $.post('/run_simulation',data=JSON.stringify(params),dataType='json')
 }
+

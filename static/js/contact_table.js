@@ -13,13 +13,13 @@ function generateContactTables() {
     let handle = $( '#mask_bcg' + " #custom-handle" );
     $('#mask_bcg .slider').slider({
       // range: "min",
-      value:1,
+      value:0.135,
       //width:'30vw',
       min: 0,
       max: 1,
-      step:0.05,
+      step:0.01,
       create: function() {
-        handle.text( $( this ).slider( "value" ) * 100 + '%' );
+        handle.text( Math.round(0.135* 100) + '%' );
       },
       slide: function( event, ui ) {
         //let environment =  
@@ -28,39 +28,22 @@ function generateContactTables() {
 
       },
     });
-    $('#home_bcg #senior_slider').slider({
-      // range: "min",
-      value:1,
-      //width:'30vw',
-      min: 0,
-      max: 1,
-      step:0.05,
-      create: function() {
-        $( '#home_bcg #senior_slider #custom-handle' ).text( $( this ).slider( "value" ) * 100 + '%' );
-      },
-      slide: function( event, ui ) {
-        //let environment =  
-        $( '#home_bcg #senior_slider #custom-handle' ).text( Math.round(ui.value * 100) + '%');
-        //$('#mask_bcg' + ' .contact_table img').css('opacity',getImageOpacity(ui.value))
-
-      },
-    });
-
 }
 
 function drawTables(contact_matrices) {
 
-    school = drawTable(contact_matrices['school'],'#school_bcg .table_container','school')
-    work = drawTable(contact_matrices['work'],'#work_bcg .table_container','work')
-    other = drawTable(contact_matrices['other'],'#other_bcg .table_container','other')
-    home = drawTable(contact_matrices['home'],'#home_bcg .table_container','home',[1,2],1)
+    school = drawTable(contact_matrices['school'],'#school_bcg .table_container','school',[0,1],0.01)
+    work = drawTable(contact_matrices['work'],'#work_bcg .table_container','work',[0,1],0.5)
+    other = drawTable(contact_matrices['other'],'#other_bcg .table_container','other',[0,1],0.2)
+    home = drawTable(contact_matrices['home'],'#home_bcg .table_container','home',[1,1.44],1.44)
 
     return contact_matrices
 }
 
-function drawTable(matrix,selector,environment,slider_range=[0,1],slider_default=1) {
+function drawTable(matrix,selector,environment,slider_range,slider_default) {
     //$(selector).remove();
-	
+	  matrix = multiplyMatrix(matrix,slider_default)
+
     let div = d3.select(selector).append('div').attr('class','contact_table');
 
     let img =$('<img />', {src:'img/'+environment+ '.svg'}).appendTo($(selector + ' .contact_table'));
@@ -72,7 +55,7 @@ function drawTable(matrix,selector,environment,slider_range=[0,1],slider_default
     
 	thead.append('tr')
 	  .selectAll('th')
-	  .data([''].concat(agecats.map(x=>labels[x]))).enter()
+	  .data(['Koho → \n Kdo ↓'].concat(agecats.map(x=>labels[x]))).enter()
 	  .append('th')
 	    .text(function (column) { return column; });
 	// create a row for each object in the data
@@ -96,7 +79,7 @@ function drawTable(matrix,selector,environment,slider_range=[0,1],slider_default
     $(selector).append($('<h4>Intenzita potkávání: </h4>'));
 
     let slidercont = $('<div />', {class:'slider_cont'}).appendTo($(selector))
-    slidercont.append($('<div />',{class:'slider'}))
+    slidercont.append($('<div />',{class:'slider',id:environment}))
     $(selector + ' div.slider_cont .slider').append($('<div />',{class:'ui-slider-handle',id:'custom-handle'}))
     let handle = $( selector + " #custom-handle" );
 
@@ -109,9 +92,9 @@ function drawTable(matrix,selector,environment,slider_range=[0,1],slider_default
       //width:'30vw',
       min: slider_range[0],
       max: slider_range[1],
-      step:0.05,
+      step:0.01,
       create: function() {
-        handle.text( $( this ).slider( "value" ) * 100 + '%' );
+        handle.text(Math.round(slider_default * 100) +'%')
       },
       slide: function( event, ui ) {
         //let environment =  

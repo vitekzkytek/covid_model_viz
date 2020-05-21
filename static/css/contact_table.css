@@ -103,6 +103,20 @@ rect.hovered_button {
     padding-top:10vh;
 }
 
+#regionselector path.active {
+  fill:#bb133e;
+}
+
+#regionselector path {
+  fill:#ddd;
+  stroke:white;
+  stroke-width: 3;
+}
+#regionselector path:hover {
+  fill-opacity: 0.5;
+  cursor:pointer;
+}
+
 rect#border {
     fill:white;
     stroke:#bb133e;
@@ -181,4 +195,14 @@ rect#border {
       margin-left:12px;
       line-height:5.3vh;
       vertical-align: middle;
+  }
+
+  #RunSimSvg circle {
+    fill:white;
+    stroke-width: 3;
+    stroke: #bb133e;
+  }
+
+  #RunSimSvg circle.infected {
+    fill:#bb133e;
   }

@@ -1,13 +1,14 @@
 let lcg; //LineChartGlobals
 
-let current_policy_scenario = 'simint';
-let current_baseline_scenario = 'simint'
 let current_variable = 'Reported'
 let lines,legend;
 
-function drawLineChart(selector) {
-    lcg = getLineChartGlobals(selector)
+let chart_size = {
+    viewbox:{width:960,height:500},
+    viewport:{width:'80vw',height:'62vh'},
+    margin: {top:0,right:0,bottom:25,left:75}}
 
+function drawLineChart(selector) {
     updateLines(current_policy_scenario,current_baseline_scenario,current_variable);
 }
 
@@ -19,12 +20,12 @@ function getLineChartGlobals(selector) {
     let svg = d3.select(selector + ' #LineChartCont')
                 .append('svg')
                 .attr('id','LineChartSvg')
-                .attr('viewBox','0 0 960 500')
-                .attr('height','82vh')
-                .attr('width','80vw')
+                .attr('viewBox','0 0 '+ chart_size.viewbox.width +' '+ chart_size.viewbox.height)
+                .attr('height',chart_size.viewport.height)
+                .attr('width',chart_size.viewport.width)
 
     let g = svg.append("g")
-                .attr("transform", 'translate(20,20)');
+                .attr("transform", 'translate('+chart_size.margin.left+','+chart_size.margin.top+')');
     
     let parseDate = d3.timeParse('%Y-%m-%d');
 
@@ -33,16 +34,16 @@ function getLineChartGlobals(selector) {
     let end = today.addDays(150); //prototyped function below
 
     let x_scale = d3.scaleTime()
-            .rangeRound([0,864])
+            .rangeRound([0,chart_size.viewbox.width-chart_size.margin.left - chart_size.margin.right])
             .domain([start,end]); //TODO how to work with time scale, when time pass by?
     
     let y_scale = d3.scaleLinear()
-            .rangeRound([450,0])
+            .range([chart_size.viewbox.height - chart_size.margin.bottom,0])
             .domain([0,1000000]);
 
     x_axis = g.append('g')
             .attr('id','x-axis')
-            .attr('transform','translate(0,' + 450 + ')')
+            .attr('transform','translate(0,' + (chart_size.viewbox.height - chart_size.margin.bottom) + ')')
             .call(d3.axisBottom(x_scale).tickValues(d3.timeMonth.range(start,end)));
 
     y_axis = g.append('g')
@@ -63,11 +64,7 @@ function getLineChartGlobals(selector) {
     let g_circles = g.append('g').attr('id','circles')
     let g_legend = g.append('g').attr('id','legend').attr('transform','translate(750,50)')
 
-    tooltip = d3.select("body").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
 
-    
     return {
         div_container:div,
         svg:svg,
@@ -81,78 +78,42 @@ function getLineChartGlobals(selector) {
         g_lines:g_lines,
         g_circles:g_circles,
         g_legend:g_legend,
-        tooltip:tooltip
     }
 }
 
-function updateLines(policy_scenario,baseline_scenario,current_variable,baseline_color='#8d8d8d',policy_color='#bb133e') {
-    promises = generateJsonSamplePromises(policy_scenario,baseline_scenario);
-    $.when.apply($,promises).then(function() {
-        lines = clearLineChart();
-        lines = {
-            baseline: drawLine(arguments[0][0]['result'],current_variable,baseline_scenario,true,baseline_color,policy_color),
-            policy: drawLine(arguments[1][0]['result'],current_variable,policy_scenario,false,baseline_color,policy_color)
-        }
-        legend = drawLegend(baseline_scenario,policy_scenario,baseline_color,policy_color)
-    })
-}
+function drawLine(json,variable) {
 
-function drawLine(json,variable,scenario,baseline,baseline_color,policy_color) {
-    let series = json.series.filter(obj => {
-        return obj.name === variable
-      })[0]
-      
-    let data = process_series(series['data']);
-
+    let data = json.series.values[variable].map((el,i) => ({date:json.series.dates[i],value:el}))
     let g = lcg.g;
 
     let lines = lcg.g_lines;
 
     lines.append('path')
-        .attr('id',scenario)
+        .attr('id','line')
         .datum(data)
         .attr('fill','none')
-        .attr('stroke',(baseline) ? baseline_color : policy_color)
+        .attr('stroke','#bb133e')
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
-        .attr("stroke-width", (baseline) ? 1.5: 1.5)
-        .attr("stroke-dasharray",(baseline) ? 8: 0)
+        .attr("stroke-width", 1.5)
+        .attr("stroke-dasharray",0)
         .attr('d',lcg.line_generator)
 
     let circles = lcg.g_circles;
 
-    circles.append('g').attr('id',scenario)
+    circles.append('g').attr('id','circles')
         .selectAll('circle')
         .data(data)
         .enter()
         .append('circle')
         .attr('r',3)
-        .attr('fill',(baseline) ? baseline_color : policy_color)
+        .attr('fill','#bb133e')
         .attr('cy',function(d){
             return lcg.y_scale(d.value)
         })
         .attr('cx',function(d){
             return lcg.x_scale(lcg.parseDate(d.date))
         })
-        .on("mouseover", function (d) {
-            let color= d3.select('#'+$(this).parent().attr('id') + ' circle').attr('fill');
-            let rgbc = hexToRgb(color);
-            let varname = ddlconfig.variables.filter((o)=>{return o.id == current_variable})[0].text;
-            let scnname = ddlconfig.scenarios.filter((o)=>{return o.id == scenario})[0].text;
-            lcg.tooltip.transition()
-                .duration(200)
-                .style("opacity", .9)
-                .style('background-color','rgba(' + rgbc.r + ','+ rgbc.g + ',' + rgbc.b + ',' + '0.1)');
-            lcg.tooltip.html('Scénář: '+ scnname + ' <br />Datum: ' + d.date.toLocaleString('cs') + ' <br /> ' + varname + ': '+ Math.round(d.value).toLocaleString('cs'))
-                .style('color',color)
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 84) + "px");
-        })
-        .on("mouseout", function (d) {
-            lcg.tooltip.transition()
-                .duration(500)
-                .style("opacity", 0);
-        });
 
     return {
         circles:circles,

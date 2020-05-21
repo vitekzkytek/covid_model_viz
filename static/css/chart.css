@@ -1,7 +1,7 @@
 #chartcontainer {
     margin:auto;
-    width:100vw;
-    height:100vh;
+    width:50vw;
+    height:85vh;
     padding-top:8vh;
 }
 
@@ -12,8 +12,8 @@
 }
 
 .ddl {
-    width:20%;
-    margin-right:10px;
+    width:100%;
+    margin-right:0px;
     height:100%;
 }
 
@@ -25,16 +25,4 @@
 
 svg {
     /* background-color: #ddd; */
-}
-
-div.tooltip {
-    position: absolute;
-    text-align: center;
-    padding: 2px;
-    font-weight: bold;
-    border: 0px;
-    border-radius: 4px;
-    pointer-events: none;
-    padding:4px;
-    z-index: 99;
 }

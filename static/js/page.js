@@ -16,9 +16,11 @@ function loadJS() {
     
     generateContactTables();
     
-    generateControls('#chartcontainer');
-    
-    drawLineChart('#chartcontainer');
+    drawMapGlobals('#regioncontainer','#MapChartContainer',selected_date);
+
+    generateControls('#MapChartControls');
+
+    lcg = getLineChartGlobals('#chartcontainer')
 
     draw_runsim('#simcontainer')
 }
@@ -72,7 +74,13 @@ function waypointing() {
             offset: offset
         });
     }
-    addMenuProgressTrigger('context','mIntro');
+
+    addMenuProgressTrigger('school','mSchool');
+    addMenuProgressTrigger('work','mWork');
+    addMenuProgressTrigger('other','mOther');
+    addMenuProgressTrigger('home','mHome');
+    addMenuProgressTrigger('mask','mMask');
+    addMenuProgressTrigger('sim','mSim');
 
 
     // Switching backgrounds
@@ -90,13 +98,16 @@ function waypointing() {
             }
         })
     }
-    addBackgroundTrigger('context','school_bcg','intro');
+    
+    addBackgroundTrigger('school','school_bcg','intro');
     addBackgroundTrigger('work','work_bcg','school_bcg');
     addBackgroundTrigger('other','other_bcg','work_bcg');
     addBackgroundTrigger('home','home_bcg','other_bcg');
     addBackgroundTrigger('mask','mask_bcg','home_bcg');
     addBackgroundTrigger('region','region_bcg','mask_bcg');
     addBackgroundTrigger('sim','sim_bcg','region_bcg');
+    addBackgroundTrigger('sample','sample_bcg','sim_bcg');
+
 
     $('#sim').waypoint(function(direction) {
         if (direction === 'down') {
