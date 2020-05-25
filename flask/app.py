@@ -8,6 +8,7 @@ import pandas as pd
 import json
 import os
 import time
+from orp import orp2reg
 
 app = Flask(__name__,template_folder='static',static_url_path='/',static_folder='static')
 
@@ -34,6 +35,10 @@ def contact_matrices():
         return {'success':False,'error_msg':'File {} does not exist'.format(path)}
 
 
+def regionsToAPI(regions,orp2reg):
+    d_regs = {i:r for i,r in enumerate(regions)}
+    return [1 if d_regs[orp2reg[i]] else 2 for i in range(len(orp2reg.keys()))]
+
 @app.route('/run_simulation',methods=['GET','POST'])
 def run_simulation():
     params = request.get_json()
@@ -46,7 +51,7 @@ def run_simulation():
         'school':'con_School'
     }
     conmats = {con_labels[matrix]:(pd.DataFrame(matrices[matrix])*params[matrix]['intensity']).values.T.tolist() for matrix in matrices}
-    
+
     api_params = {
     # 'contact_matrices':conmats,
         'Reopen_School':params['school']['intensity'],
@@ -58,7 +63,8 @@ def run_simulation():
         'Reopen_Home':params['home']['intensity'],
         'Reopen_Protection':params['mask']['intensity'],
         'Reopen_Protection_Seniors':str(params['mask']['seniors']).upper(),
-        'closeORP':str([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
+        #'closeORP':str([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]),
+        'closeORP':regionsToAPI(params['regions'],orp2reg)
     }
 
     try:
