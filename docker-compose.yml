@@ -10,7 +10,9 @@ services:
     - ./static:/app/static
     - ./sample_json:/app/sample_json
     - ./json:/app/json
-
+    env_file:
+      - env.env
+  
     ports:
       - 5000:5000
       - 5001:5001

@@ -73,7 +73,7 @@ def run_simulation():
 
         datstring = "Reopen_School={Reopen_School}&Reopen_School_Seniors={Reopen_School_Seniors}&Reopen_Work={Reopen_Work}&Reopen_Work_Seniors={Reopen_Work_Seniors}&Reopen_Other={Reopen_Other}&Reopen_Other_Seniors={Reopen_Other_Seniors}&Reopen_Home={Reopen_Home}&Reopen_Protection={Reopen_Protection}&Reopen_Protection_Seniors={Reopen_Protection_Seniors}&closeORP={closeORP}".format(**api_params)
         print(datstring)
-        response = requests.post('http://51.15.75.174/model',data=datstring)
+        response = requests.post(os.getenv('API_HOST') + '/model',data=datstring)
         end = time.time()
         print('Receiving reponse at {}'.format(time.ctime(end)))
 
