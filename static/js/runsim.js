@@ -27,17 +27,29 @@ function draw_runsim(selector) {
         .attr('rx',20)
         .attr('rx',20);
 
-    svg.selectAll('image')
+    let imgicons = svg.selectAll('image')
         .data(env_images)
         .enter()
         .append('g')
         .attr('id',d=>d.env)
         .attr('class','imgicon')
-        .attr('transform',d=>'translate('+ d.x + ',' + d.y + ')')
-        .append('svg:image')
+        .attr('transform',d=>'translate('+ d.x + ',' + d.y + ')');
+    imgicons.append('svg:image')
         .attr('xlink:href',d=>'img/' + d.env + '.svg')
         .attr('width',img_size)
         .attr('height',img_size);
+    
+    imgicons.append('text')
+        .attr('class','perc_val')
+        .attr('transform','translate('+ img_size/2 +',-20)')
+        .attr('x',0)
+        .attr('y',0);
+    imgicons.append('text')
+        .attr('class','seniors')
+        .attr('transform','translate('+ img_size/2 +','+(img_size+20)+')')
+        .attr('x',0)
+        .attr('y',0);
+
     let gbutton = svg.append('g')
         .attr('id','run_button')
     gbutton.append('rect')
@@ -83,10 +95,18 @@ function draw_runsim(selector) {
 function refresh_image_opacity() {
     let ids = env_images.map(env=>env.env)
     for (id in ids) {
-        let simimg = $('#RunSimSvg #'+ids[id])
+        let simimg = d3.select('#RunSimSvg #'+ids[id])
         let table_img = $('#' + ids[id] +'_bcg img')
-        simimg.css('opacity',table_img.css('opacity'))
+
+        let opac = table_img.css('opacity')
+        simimg.style('opacity',opac)
+        simimg.select('text.perc_val').text($('#'+ ids[id] +'.ui-slider').text())
+
+        if (ids[id] != 'home') {
+            simimg.select('text.seniors').text(($('#' + ids[id]+'_bcg .switch input').is(':checked')) ? 'Senioři: Ano': 'Senioři: Ne')
+        }
     }
+
     return ids
 }
 

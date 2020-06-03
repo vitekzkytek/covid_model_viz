@@ -206,3 +206,10 @@ rect#border {
   #RunSimSvg circle.infected {
     fill:#bb133e;
   }
+
+
+  #RunSimSvg .imgicon text {
+    fill:#bb133e;
+    text-anchor:middle;
+    font-size: calc(15px +0.5vh)
+  }
