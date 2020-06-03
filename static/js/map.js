@@ -150,6 +150,14 @@ function drawMapGlobals(reg_selector,map_selector,init_date,start = new Date(202
             .text(function(d) {return (d*100 + '%').replace('.',',')})
             
 
+        let total_g =map_chart_svg
+            .append('g')
+            .attr('id','total')
+            .attr('transform','translate(100,25)')
+            .append('text')
+            .attr('x',0)
+            .attr('y',0);
+
     });
     
     
@@ -207,6 +215,9 @@ function updateMapChart(selector,modeldata,variable,selected_date) {
         .attr('x',function(d) {return d.properties.centroid[0]})
         .attr('y',function(d) {return d.properties.centroid[1]})
         .text(function(d) {return Math.round(d.properties.value)});
+
+
+        svg.select('g#total text').text('Celkem: ' + Math.round(modeldata.series.values[variable][idxDate]));
 
     updateLegend(selector,logScale)
 }

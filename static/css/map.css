@@ -45,3 +45,8 @@ div.tooltip {
     padding:4px;
     z-index: 99;
 }
+
+g#total text {
+    fill:#bb133e;
+    font-size: calc(15px + .7vh);;
+}
