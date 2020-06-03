@@ -123,10 +123,18 @@ function run_simulation(){
 function hide_sim() {
     $('#simcontainer').fadeOut(1000)
 }
+
+function show_sim() {
+    $('#simcontainer').fadeIn(1000)
+
+}
 function show_chart() {
     $('#chartcontainer').fadeIn(1000)
 }
+function hide_chart() {
+    $('#chartcontainer').fadeOut(1000)
 
+}
 function collect_parameters() {
     return {
         school:{
