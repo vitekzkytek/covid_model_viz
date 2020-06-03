@@ -99,7 +99,7 @@ rect.hovered_button {
     cursor: pointer;
 }
 
-#sim_bcg svg{
+#RunSimSvg{
     padding-top:10vh;
 }
 

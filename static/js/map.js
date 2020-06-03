@@ -36,7 +36,9 @@ function drawMapGlobals(reg_selector,map_selector,init_date,start = new Date(202
     // );
         regiodata = JSON.parse(JSON.stringify(geodata));;
         mapdata = JSON.parse(JSON.stringify(geodata));;
-        let projection = d3.geoMercator().fitSize([0.5*window.innerWidth-30,0.5*window.innerHeight],regiodata);
+        //let projection = d3.geoMercator().fitSize([0.5*window.innerWidth-30,0.5*window.innerHeight],regiodata);
+        let projection = d3.geoMercator().fitExtent([[0,0],[450,350]],regiodata);
+
         let geoGenerator = d3.geoPath().projection(projection);
         mapdata.features.forEach(function (f) {
             f.properties.centroid = geoGenerator.centroid(f.geometry)
@@ -78,7 +80,12 @@ function drawMapGlobals(reg_selector,map_selector,init_date,start = new Date(202
                 d3.select(this).classed('active',d.properties.active)
             });
 
-        map_chart_svg = d3.select(map_selector + ' #MapChart').append('svg').attr('width','50vw').attr('height','50vh').attr('id','MapChartSvg');
+        map_chart_svg = d3.select(map_selector + ' #MapChart')
+            .append('svg')
+            .attr('width','50vw')
+            .attr('height','50vh')
+            .attr('viewBox','0 0 450 350')
+            .attr('id','MapChartSvg');
             
         let g2 = map_chart_svg
             .append('g')

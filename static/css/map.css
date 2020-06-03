@@ -3,8 +3,8 @@
 }
 
 #MapChartSvg {
-    margin-top:5vh;
-    margin-bottom: 5vh;
+    /* margin-top:5vh;
+    margin-bottom: 5vh; */
 }
 
 .kraj {
@@ -27,6 +27,11 @@
 #helpPrague {
     stroke-width: 2px;
 }
+
+#MapChartSvg {
+    padding-top: 3vh;
+}
+
 #MapChartSvg .leg_g text{
     text-anchor: start;
     fill:black;

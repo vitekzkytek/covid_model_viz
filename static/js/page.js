@@ -20,7 +20,7 @@ function loadJS() {
 
     generateControls('#MapChartControls');
 
-    lcg = getLineChartGlobals('#chartcontainer')
+    // lcg = getLineChartGlobals('#chartcontainer')
 
     draw_runsim('#simcontainer')
 }
