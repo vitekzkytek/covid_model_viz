@@ -13,13 +13,13 @@ function generateContactTables() {
     let handle = $( '#mask_bcg' + " #custom-handle" );
     $('#mask_bcg .slider').slider({
       // range: "min",
-      value:0.135,
+      value:0.865,
       //width:'30vw',
       min: 0,
       max: 1,
       step:0.01,
       create: function() {
-        handle.text( Math.round(0.135* 100) + '%' );
+        handle.text( Math.round(0.865* 100) + '%' );
       },
       slide: function( event, ui ) {
         //let environment =  
