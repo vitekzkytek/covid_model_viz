@@ -39,16 +39,16 @@ function draw_runsim(selector) {
         .attr('width',img_size)
         .attr('height',img_size);
     
-    imgicons.append('text')
-        .attr('class','perc_val')
-        .attr('transform','translate('+ img_size/2 +',-20)')
-        .attr('x',0)
-        .attr('y',0);
-    imgicons.append('text')
-        .attr('class','seniors')
-        .attr('transform','translate('+ img_size/2 +','+(img_size+20)+')')
-        .attr('x',0)
-        .attr('y',0);
+    // imgicons.append('text')
+    //     .attr('class','perc_val')
+    //     .attr('transform','translate('+ img_size/2 +',-20)')
+    //     .attr('x',0)
+    //     .attr('y',0);
+    // imgicons.append('text')
+    //     .attr('class','seniors')
+    //     .attr('transform','translate('+ img_size/2 +','+(img_size+20)+')')
+    //     .attr('x',0)
+    //     .attr('y',0);
 
     let gbutton = svg.append('g')
         .attr('id','run_button')
@@ -159,11 +159,11 @@ function collect_parameters() {
     return {
         school:{
             'intensity':$('#school.slider').slider('option','value'),
-            'seniors':$('#school_bcg .checkbox').is(':checked')
+            'seniors':true//$('#school_bcg .checkbox').is(':checked')
         },
         work:{
             'intensity':$('#work.slider').slider('option','value'),
-            'seniors':$('#work_bcg .checkbox').is(':checked')
+            'seniors':true//$('#work_bcg .checkbox').is(':checked')
         },
         other:{
             'intensity':$('#other.slider').slider('option','value'),

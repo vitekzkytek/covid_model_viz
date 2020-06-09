@@ -6,6 +6,10 @@ let modeldata;
 let geoGenerator;
 let tooltip;
 
+
+const regionnames = ['Hlavní město Praha', 'Středočeský kraj', 'Jihočeský kraj','Plzeňský kraj','Karlovarský kraj', 'Ústecký kraj', 'Liberecký kraj', 'Královéhradecký kraj',
+     'Pardubický kraj', 'Kraj Vysočina', 'Jihomoravský kraj', 'Olomoucký kraj', 'Zlínský kraj', 'Moravskoslezský kraj']
+
 const legmax ={Reported:1000000,Dead:100000,Infected:10000000,Hospital:100000}
 const czech_pop = 10000000;
 
@@ -78,8 +82,10 @@ function drawMapGlobals(reg_selector,map_selector,init_date,start = new Date(202
             .on('click',function(d) {
                 d.properties.active = !d.properties.active;
                 d3.select(this).classed('active',d.properties.active)
+                updateRegMapSummary();
             });
-
+        updateRegMapSummary();
+        
         map_chart_svg = d3.select(map_selector + ' #MapChart')
             .append('svg')
             .attr('width','50vw')
@@ -247,6 +253,39 @@ function drawMapChart(selector,variable,date) {
         modeldata = data['result'];
         updateMapChart(selector,modeldata,variable,date)
     });
+}
+function updateRegMapSummary() {
+    let regionbools = $('#regionselector path').toArray().map(x=>$(x).hasClass('active'))
+    let textSummary = '';
 
+    if (regionbools.filter(Boolean).length == regionnames.length) {
+        textSummary = 'Všechny kraje';
+    } else {
 
+    
+        if(regionbools.filter(Boolean).length >=7) {
+            let unselected = []
+            regionbools.forEach((element,index) => {
+                if (!element) {
+                    unselected.push(regionnames[index]);
+                }
+            });
+            textSummary = 'Nevybrané kraje: ' + unselected.join(', ')
+        } else {
+            if (regionbools.filter(Boolean).length == 0) {
+                textSummary = 'Žádný kraj';
+            } else {
+                let selected = []
+                regionbools.forEach((element,index) => {
+                    if (element) {
+                        selected.push(regionnames[index]);
+                    }
+                    
+                });
+                textSummary = 'Vybrané kraje: ' + selected.join(', ')
+            }
+        }
+    }
+
+    let el = $('#summarycontainer #summary_region #textMap').text(textSummary)
 }

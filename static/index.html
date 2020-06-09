@@ -112,14 +112,14 @@
                     <h3>Kolik lidí potkáme ve škole?</h3>
 
                 </div>
-                <h4>Senioři:</h4>
+                <!-- <h4>Senioři:</h4>
                 <div class="switch_container">
                         <label class="switch">
                             <input type="checkbox">
                             <span class="checkbox round"></span>
                         </label><span class="switch_label">Učitelé v důchodovém věku budou do školy docházet osobně</span>
                 </div>
-
+ -->
             </div>
         </div>
         <div class="fixempty full60h"></div>
@@ -139,17 +139,6 @@
             </div>
         </div>
         <div class="fixempty full60h"></div>
-        <div id="empt2-school_bcg" class="fullscreen">
-            <div class="content">
-                <div class="box whitebox draggable">
-                    <div class="dragbutton"><img src="img/move.svg" width="20" height="20" /></div>
-                    <p>Platí toto nastavení i pro seniory? Pokud chcete školy (třeba jen částečně) otevřít, ale učitele v důchodovém věku do nich nepouštět, zaškrtněte následující políčko:
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="fixempty full60h"></div>
-
         <div id="work" class="flow flowtext">
             <div class="content">
                 <h3>Krok 2: Zaměstnání</h3>
@@ -161,14 +150,6 @@
             <div class="content">
                     <div class="table_container">
                     <h3>Kolik lidí potkáme v práci?</h3>
-
-                </div>
-                <h4>Senioři:</h4>
-                <div class="switch_container">
-                        <label class="switch">
-                            <input type="checkbox">
-                            <span class="checkbox round"></span>
-                        </label><span class="switch_label">Pracující důchodci nechodí fyzicky na pracoviště a zůstávají v home-office</span>
                 </div>
             </div>
         </div>
@@ -189,18 +170,8 @@
                 </div>
             </div>
         </div>
-        <div class="fixempty full60h></div>
+        <div class="fixempty full60h"></div>
 
-        <div id="empt2-work_bcg" class="fullscreen">
-            <div class="content">
-                <div class="box whitebox draggable">
-                    <div class="dragbutton"><img src="img/move.svg" width="20" height="20" /></div>
-                    <p>Platí toto nastavení i pro seniory? Pokud chcete školy, aby aktivní senioři pracovali pouze doma, zaškrtněte následující políčko:
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="fixempty fullscreen"></div>
 
 
         <div id="other" class="flow flowtext">
@@ -219,7 +190,7 @@
                 <h4>Senioři:</h4>
                 <div class="switch_container">
                         <label class="switch">
-                            <input type="checkbox">
+                            <input type="checkbox" onclick="checkSeniorsOthers(0)">
                             <span class="checkbox round"></span>
                         </label><span class="switch_label">Senioři se nevěnují sportu, sami nechodí fyzicky nakupovat ani k lékaři, jsou pouze doma.</span>
                 </div>
@@ -332,7 +303,7 @@
                 <h4>Senioři:</h4>
                 <div class="switch_container">
                         <label class="switch">
-                            <input type="checkbox">
+                            <input type="checkbox" onclick="checkSeniorsMask(0)">
                             <span class="checkbox round"></span>
                         </label><span class="switch_label">Senioři budou opatření dodržovat obzvlášť důsledně</span>
                 </div>
@@ -363,6 +334,72 @@
             </div>
         </div>
         <div class="fixempty fullscreen"></div>
+
+        <div id="summary" class="flow flowtext">
+            <div class="content">
+                <h3>Shrnutí</h3>
+            </div>
+        </div>
+        <div id="summary_bcg" class="fix fullscreen">
+            <div class="content">
+                <h3>Shrnutí</h3>
+                <div id="summarycontainer">
+                    <div id="summary_school"  class="param">
+                        <h4>Škola:</h4>
+                        <div class="seniors"></div>
+                        <div class="slider">
+                            <div id="custom-handle" class="ui-slider-handle"></div>
+                        </div>
+                    </div>
+                    <div id="summary_work" class="param">
+                        <h4>Práce:</h4>
+                        <div class="seniors"></div>
+
+                        <div class="slider">
+                            <div id="custom-handle" class="ui-slider-handle"></div>
+                        </div>
+                    </div>
+                    <div id="summary_other" class="param">
+                        <h4>Ostatní:</h4>
+                        <div class="seniors">
+                            Senioři:
+                                    <input type="checkbox" onclick="checkSeniorsOthers(1)">
+                        </div>
+        
+                        <div class="slider">
+                            <div id="custom-handle" class="ui-slider-handle"></div>
+                        </div>
+                    </div>
+                    <div id="summary_home" class="param">
+                        <h4>Domov:</h4>
+                        <div class="seniors"></div>
+
+                        <div class="slider">
+                            <div id="custom-handle" class="ui-slider-handle"></div>
+                        </div>
+                    </div>
+                    <div id="summary_mask" class="param">
+                        <h4>Opatření:</h4>
+                        <div class="seniors">
+                            Senioři:
+                                    <input type="checkbox" onclick="checkSeniorsMask(1)">
+                        </div>
+
+                        <div class="slider">
+                            <div id="custom-handle" class="ui-slider-handle"></div>
+                        </div>
+                    </div>
+                    <div id="summary_region" class="param">
+                        <h4>Regiony:</h4>
+                        <div id="textMap">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fixempty fullscreen"></div>
+
+
         <div id="sim" class="flow flowtext">
             <div class="content">
                 <h3>Simulace</h3>

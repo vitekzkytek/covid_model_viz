@@ -38,9 +38,19 @@ function generateNewSimButton(selector) {
 
 }
 function new_sim() {
-    MoveOn('empty-intro')
+    MoveOn('summary')
     hide_chart();
     d3.select('#simcontainer').selectAll('*').remove();
     draw_runsim('#simcontainer')
     show_sim();
+}
+
+function checkSeniorsMask(order) {
+    let selectors = ['#mask_bcg input','#summarycontainer #summary_mask input'];
+    $(selectors[1-order]).prop('checked',$(selectors[order]).is(':checked'))
+}
+
+function checkSeniorsOthers(order) {
+    let selectors = ['#other_bcg input','#summarycontainer #summary_other input'];
+    $(selectors[1-order]).prop('checked',$(selectors[order]).is(':checked'))
 }

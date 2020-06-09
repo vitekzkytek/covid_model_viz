@@ -213,3 +213,31 @@ rect#border {
     text-anchor:middle;
     font-size: calc(15px +0.5vh)
   }
+
+  #summarycontainer div.param {
+    margin:10px;
+  }
+
+  #summarycontainer div.slider {
+    float:right;
+    top:0.3em;
+  }
+  
+  #summarycontainer div.seniors {
+    float:right;
+    margin-left:2.5vw;
+    width:10vw;
+    height:0.8em;
+    top:0;
+  }
+  #summarycontainer h4 {
+    display: inline;
+  }
+
+  #summarycontainer #textMap {
+    display: inline;
+  }
+
+  #summary_bcg h3 {
+    margin-top:10vh;
+  }

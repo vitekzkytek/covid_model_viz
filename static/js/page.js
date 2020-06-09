@@ -105,7 +105,8 @@ function waypointing() {
     addBackgroundTrigger('home','home_bcg','other_bcg');
     addBackgroundTrigger('mask','mask_bcg','home_bcg');
     addBackgroundTrigger('region','region_bcg','mask_bcg');
-    addBackgroundTrigger('sim','sim_bcg','region_bcg');
+    addBackgroundTrigger('summary','summary_bcg','region_bcg');
+    addBackgroundTrigger('sim','sim_bcg','summary_bcg');
     addBackgroundTrigger('sample','sample_bcg','sim_bcg');
 
 
@@ -180,9 +181,7 @@ function showModal(modal) {
     } else {
         alert('THERE IS NO MODAL NAMED ' + modal + '!!!');
     }
-}
-
-;
+};
 
 function hideAndShow(modal) {
     hideModal();

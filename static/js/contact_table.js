@@ -11,6 +11,8 @@ function generateContactTables() {
         tables = drawTables(arguments[0]['result']);
     })
     let handle = $( '#mask_bcg' + " #custom-handle" );
+    let handle2 = $( '#summarycontainer #summary_mask' + " #custom-handle" );
+
     $('#mask_bcg .slider').slider({
       // range: "min",
       value:0.865,
@@ -24,10 +26,34 @@ function generateContactTables() {
       slide: function( event, ui ) {
         //let environment =  
         handle.text( Math.round(ui.value * 100) + '%');
+        $('#summarycontainer #summary_mask .slider').slider( "value", ui.value );
+        handle2.text( Math.round(ui.value * 100) + '%');
+
         $('#mask_bcg' + ' .contact_table img').css('opacity',getImageOpacity(ui.value))
 
       },
     });
+
+    $('#summarycontainer #summary_mask .slider').slider({
+      // range: "min",
+      value:0.865,
+      //width:'30vw',
+      min: 0,
+      max: 1,
+      step:0.01,
+      create: function() {
+        handle2.text( Math.round(0.865* 100) + '%' );
+      },
+      slide: function( event, ui ) {
+        //let environment =  
+        handle.text( Math.round(ui.value * 100) + '%');
+        $( '#mask_bcg .slider' ).slider( "value", ui.value );
+        handle2.text( Math.round(ui.value * 100) + '%');
+        $('#mask_bcg' + ' .contact_table img').css('opacity',getImageOpacity(ui.value))
+
+      },
+    });
+
 }
 
 function drawTables(contact_matrices) {
@@ -83,9 +109,13 @@ function drawTable(matrix,selector,environment,slider_range,slider_default) {
     $(selector + ' div.slider_cont .slider').append($('<div />',{class:'ui-slider-handle',id:'custom-handle'}))
     let handle = $( selector + " #custom-handle" );
 
+    let summary_slider_selector = '#summarycontainer #summary_' + selector.replace('#','').replace('_bcg .table_container','') + ' .slider' 
+    let handle2 = $(summary_slider_selector + " #custom-handle" );
+
     let slide_closure = function(value) {
-            slideIntensity(selector,environment,value,slider_range);
+      slideIntensity(selector,environment,value,slider_range);
     }
+    
     $(selector + ' .slider').slider({
       // range: "min",
       value: slider_default,
@@ -94,18 +124,55 @@ function drawTable(matrix,selector,environment,slider_range,slider_default) {
       max: slider_range[1],
       step:0.01,
       create: function() {
-        handle.text(Math.round(slider_default * 100) +'%')
+        handle.text(Math.round(slider_default * 100) +'%')      
       },
-      slide: function( event, ui ) {
-        //let environment =  
+      slide: function(event,ui) {
         handle.text( Math.round(ui.value * 100) + '%');
-        slide_closure(ui.value);
+        slide_closure(ui.value);    
+      },
+    });
+
+    $(selector + ' .slider').slider({
+      // range: "min",
+      value: slider_default,
+      //width:'30vw',
+      min: slider_range[0],
+      max: slider_range[1],
+      step:0.01,
+      create: function() {
+        handle.text(Math.round(slider_default * 100) +'%')      
+      },
+      slide: function(event,ui) {
+        handle.text( Math.round(ui.value * 100) + '%');
+        $( summary_slider_selector ).slider( "value", ui.value );
+        handle2.text( Math.round(ui.value * 100) + '%');
+
+        slide_closure(ui.value);    
+      },
+    });
+
+    $(summary_slider_selector).slider({
+      // range: "min",
+      value: slider_default,
+      width:'30vw',
+      min: slider_range[0],
+      max: slider_range[1],
+      step:0.01,
+      create: function() {
+        handle2.text(Math.round(slider_default * 100) +'%')      
+      },
+      slide: function(event,ui) {
+        handle2.text( Math.round(ui.value * 100) + '%');
+        $( selector + ' .slider' ).slider( "value", ui.value );
+        handle.text( Math.round(ui.value * 100) + '%');
+        slide_closure(ui.value);    
       },
     });
 
   return tbl;
 
 }
+
 
 function matrixToTableData(row,matrix){
   return [labels[row]].concat(agecats.map(x=> matrix[row][x]))
@@ -136,7 +203,6 @@ function redrawTable(selector,environment,value) {
   .selectAll("td")
   .data(matrix_closure)
   .text(tableDataToText);
-
 }
 
 function multiplyMatrix(matrix,value) {
