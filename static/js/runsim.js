@@ -39,17 +39,6 @@ function draw_runsim(selector) {
         .attr('width',img_size)
         .attr('height',img_size);
     
-    // imgicons.append('text')
-    //     .attr('class','perc_val')
-    //     .attr('transform','translate('+ img_size/2 +',-20)')
-    //     .attr('x',0)
-    //     .attr('y',0);
-    // imgicons.append('text')
-    //     .attr('class','seniors')
-    //     .attr('transform','translate('+ img_size/2 +','+(img_size+20)+')')
-    //     .attr('x',0)
-    //     .attr('y',0);
-
     let gbutton = svg.append('g')
         .attr('id','run_button')
     gbutton.append('rect')
@@ -70,7 +59,6 @@ function draw_runsim(selector) {
         })
         .on('click',run_simulation);
 
-;
 
     gbutton.append('text')
         //.attr('id','run_button_text')

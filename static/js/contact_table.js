@@ -112,25 +112,24 @@ function drawTable(matrix,selector,environment,slider_range,slider_default) {
     let summary_slider_selector = '#summarycontainer #summary_' + selector.replace('#','').replace('_bcg .table_container','') + ' .slider' 
     let handle2 = $(summary_slider_selector + " #custom-handle" );
 
-    let slide_closure = function(value) {
-      slideIntensity(selector,environment,value,slider_range);
+    let slide_closure = function(value,seniors) {
+      slideIntensity(selector,environment,value,slider_range,seniors);
     }
     
-    $(selector + ' .slider').slider({
-      // range: "min",
-      value: slider_default,
-      //width:'30vw',
-      min: slider_range[0],
-      max: slider_range[1],
-      step:0.01,
-      create: function() {
-        handle.text(Math.round(slider_default * 100) +'%')      
-      },
-      slide: function(event,ui) {
-        handle.text( Math.round(ui.value * 100) + '%');
-        slide_closure(ui.value);    
-      },
-    });
+    // $(selector + ' .slider').slider({
+    //   // range: "min",
+    //   value: slider_default,
+    //   //width:'30vw',
+    //   min: slider_range[0],
+    //   max: slider_range[1],
+    //   step:0.01,
+    //   create: function() {
+    //     handle.text(Math.round(slider_default * 100) +'%')      
+    //   },
+    //   slide: function(event,ui) {
+    //     handle.text( Math.round(ui.value * 100) + '%');
+    //   },
+    // });
 
     $(selector + ' .slider').slider({
       // range: "min",
@@ -147,7 +146,10 @@ function drawTable(matrix,selector,environment,slider_range,slider_default) {
         $( summary_slider_selector ).slider( "value", ui.value );
         handle2.text( Math.round(ui.value * 100) + '%');
 
-        slide_closure(ui.value);    
+        let env = selector.substring(1,selector.lastIndexOf("_bcg"));
+        let seniors = (env == 'other') ? !$('#other_bcg .switch input').is(':checked') : true;
+        slide_closure(ui.value,seniors);    
+
       },
     });
 
@@ -165,7 +167,10 @@ function drawTable(matrix,selector,environment,slider_range,slider_default) {
         handle2.text( Math.round(ui.value * 100) + '%');
         $( selector + ' .slider' ).slider( "value", ui.value );
         handle.text( Math.round(ui.value * 100) + '%');
-        slide_closure(ui.value);    
+        
+        let env = selector.substring(1,selector.lastIndexOf("_bcg"));
+        let seniors = (env == 'other') ? !$('#other_bcg .switch input').is(':checked') : true;
+        slide_closure(ui.value,seniors);    
       },
     });
 
@@ -185,16 +190,16 @@ function tableDataToText(d) {
 function getImageOpacity(value,c=0.1) {
   return value+c-value*c
 }
-function slideIntensity(selector,environment,value,slider_range) {
+function slideIntensity(selector,environment,value,slider_range,seniors) {
   //fade the building image
   $(selector + ' .contact_table img').css('opacity',getImageOpacity(value-slider_range[0]))
 
   //redraw table
-  redrawTable(selector,environment,value);
+  redrawTable(selector,environment,value,seniors);
 }
 
-function redrawTable(selector,environment,value) {
-  let matrix = multiplyMatrix(orig_matrices[environment],value)
+function redrawTable(selector,environment,value,seniors) {
+  let matrix = multiplyMatrix(orig_matrices[environment],value,seniors)
   let matrix_closure = function(row) {return matrixToTableData(row,matrix)}
 
   tbody = d3.select(selector + ' tbody')
@@ -205,22 +210,22 @@ function redrawTable(selector,environment,value) {
   .text(tableDataToText);
 }
 
-function multiplyMatrix(matrix,value) {
+function multiplyMatrix(matrix,value,seniors) {
   return {
     adults:{
       adults:matrix['adults']['adults']*value,
       juniors:matrix['adults']['juniors']*value,
-      seniors:matrix['adults']['seniors']*value
+      seniors: (seniors) ? matrix['adults']['seniors']*value :  matrix['adults']['seniors']
     },
     juniors:{
       adults:matrix['juniors']['adults']*value,
       juniors:matrix['juniors']['juniors']*value,
-      seniors:matrix['juniors']['seniors']*value
+      seniors:(seniors) ? matrix['juniors']['seniors']*value : matrix['juniors']['seniors']
     },
     seniors:{
-      adults:matrix['seniors']['adults']*value,
-      juniors:matrix['seniors']['juniors']*value,
-      seniors:matrix['seniors']['seniors']*value
+      adults: (seniors) ? matrix['seniors']['adults']*value : matrix['seniors']['adults'],
+      juniors: (seniors) ? matrix['seniors']['juniors']*value : matrix['seniors']['juniors'],
+      seniors: (seniors) ? matrix['seniors']['seniors']*value : matrix['seniors']['seniors']
     }
   }
 }
