@@ -121,9 +121,9 @@ h4 {
     height:100vh;
     box-sizing: border-box;
 }
-.full90h {
+.full60h {
     width:100vw;
-    height:90vh;
+    height:60vh;
     box-sizing: border-box;
 }
 .fixempty {
