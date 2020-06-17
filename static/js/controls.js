@@ -53,4 +53,5 @@ function checkSeniorsMask(order) {
 function checkSeniorsOthers(order) {
     let selectors = ['#other_bcg input','#summarycontainer #summary_other input'];
     $(selectors[1-order]).prop('checked',$(selectors[order]).is(':checked'))
+    redrawTable("#other_bcg .table_container","other",$("#other_bcg .slider").slider('option','value'),$(selectors[order]).is(':checked'))
 }

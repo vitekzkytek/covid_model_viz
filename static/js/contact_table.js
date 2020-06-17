@@ -2,6 +2,7 @@ let tables;
 let orig_matrices;
 const agecats = ['juniors','adults','seniors'];
 const labels = {juniors:"Děti",adults:'Dospělí',seniors:'Senioři'}
+const env_defaults = {'school':1,'work':1,'other':0.2,'home':1}
 
 function generateContactTables() {
     promise = generateJsonContactTablesPromise();
@@ -68,7 +69,7 @@ function drawTables(contact_matrices) {
 
 function drawTable(matrix,selector,environment,slider_range,slider_default) {
     //$(selector).remove();
-	  matrix = multiplyMatrix(matrix,slider_default)
+	  matrix = multiplyMatrix(matrix,slider_default,false,environment)
 
     let div = d3.select(selector).append('div').attr('class','contact_table');
 
@@ -199,7 +200,7 @@ function slideIntensity(selector,environment,value,slider_range,seniors) {
 }
 
 function redrawTable(selector,environment,value,seniors) {
-  let matrix = multiplyMatrix(orig_matrices[environment],value,seniors)
+  let matrix = multiplyMatrix(orig_matrices[environment],value,seniors,environment)
   let matrix_closure = function(row) {return matrixToTableData(row,matrix)}
 
   tbody = d3.select(selector + ' tbody')
@@ -210,22 +211,22 @@ function redrawTable(selector,environment,value,seniors) {
   .text(tableDataToText);
 }
 
-function multiplyMatrix(matrix,value,seniors) {
+function multiplyMatrix(matrix,value,seniors,env) {
   return {
     adults:{
       adults:matrix['adults']['adults']*value,
       juniors:matrix['adults']['juniors']*value,
-      seniors: (seniors) ? matrix['adults']['seniors']*value :  matrix['adults']['seniors']
+      seniors: (seniors) ? matrix['adults']['seniors']*value : matrix['adults']['seniors'] * env_defaults[env]
     },
     juniors:{
       adults:matrix['juniors']['adults']*value,
       juniors:matrix['juniors']['juniors']*value,
-      seniors:(seniors) ? matrix['juniors']['seniors']*value : matrix['juniors']['seniors']
+      seniors:(seniors) ? matrix['juniors']['seniors']*value : matrix['juniors']['seniors']* env_defaults[env]
     },
     seniors:{
-      adults: (seniors) ? matrix['seniors']['adults']*value : matrix['seniors']['adults'],
-      juniors: (seniors) ? matrix['seniors']['juniors']*value : matrix['seniors']['juniors'],
-      seniors: (seniors) ? matrix['seniors']['seniors']*value : matrix['seniors']['seniors']
+      adults: (seniors) ? matrix['seniors']['adults']*value : matrix['seniors']['adults']* env_defaults[env],
+      juniors: (seniors) ? matrix['seniors']['juniors']*value : matrix['seniors']['juniors']* env_defaults[env],
+      seniors: (seniors) ? matrix['seniors']['seniors']*value : matrix['seniors']['seniors']* env_defaults[env]
     }
   }
 }
