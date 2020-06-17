@@ -29,7 +29,7 @@ svg {
 
 a.button#run_sim {
     width:12vw;
-    height:4vh;
+    height:25px;
     font-size: calc(10px + .5vh);
     padding:0px;
     text-align: center;
