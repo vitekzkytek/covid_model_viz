@@ -4,7 +4,6 @@ let regiodata,mapdata;
 let map_chart_svg;
 let modeldata;
 let geoGenerator;
-let tooltip;
 
 
 const regionnames = ['Hlavní město Praha', 'Středočeský kraj', 'Jihočeský kraj','Plzeňský kraj','Karlovarský kraj', 'Ústecký kraj', 'Liberecký kraj', 'Královéhradecký kraj',
@@ -32,7 +31,7 @@ const ddlconfig = {
     ]
 }
 
-function drawMapGlobals(reg_selector,map_selector,init_date,start = new Date(2020,2,1),end = new Date(2020,6,31)) {
+function drawMapGlobals(reg_selector) {
     
     d3.json('map/kraje.geojson').then(function(geodata) {
     //    var geoGenerator = d3.geoPath()
@@ -61,9 +60,6 @@ function drawMapGlobals(reg_selector,map_selector,init_date,start = new Date(202
         })
         regiodata.features.forEach(function(f) { f.properties.active = true });
 
-        tooltip = d3.select("body").append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
 
         let g =  d3.select(reg_selector)
             .append('svg')
@@ -85,114 +81,7 @@ function drawMapGlobals(reg_selector,map_selector,init_date,start = new Date(202
                 updateRegMapSummary();
             });
         updateRegMapSummary();
-        
-        map_chart_svg = d3.select(map_selector + ' #MapChart')
-            .append('svg')
-            .attr('width','50vw')
-            .attr('height','50vh')
-            .attr('viewBox','0 0 450 350')
-            .attr('id','MapChartSvg');
-            
-        let g2 = map_chart_svg
-            .append('g')
-            .selectAll('path')
-            .data(mapdata.features)
-            .enter()
-            .append('path')
-            .attr('id',d=>d.properties.id)
-            .attr('class','kraj')
-            .attr('d',geoGenerator)
-            .on("mouseover", function (d) {
-                tooltip.transition()
-                    .duration(200)
-                    .style("opacity", .8)
-                    .style('background-color','#bb133e')
-                    .style('color','white')
-                tooltip.html('Kraj: '+d.properties.nazev +' <br /> Datum: ' +selected_date.toLocaleDateString('cs') +'<br/> ' + ddlconfig.variables.filter(x=>x.id===selected_variable)[0].text+': '+ Math.round(d.properties.value).toLocaleString('cs') + ',<br /> což je: '+ Math.round((d.properties.value/d.properties.pop2011)*100*1000)/1000 +'% populace kraje')
-                    .style("left", (d3.event.pageX) + "px")
-                    .style("top", (d3.event.pageY - 84) + "px");
-            })
-            .on("mousemove", function (d) {
-                tooltip.style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 84) + "px");
-
-            })
-            .on("mouseout", function (d) {
-                tooltip.transition()
-                    .duration(500)
-                    .style("opacity", 0);
-            });
-    ;
-
-        map_chart_svg.append('g').attr('id','labels')
-        .selectAll('text')
-            .data(mapdata.features)
-            .enter()
-            .append('text');
-
-        p1 = projection([14.45,50.086]);
-        p2 = projection([14.85,50.18]);
-
-        map_chart_svg 
-            .append('line')
-            .attr('id','helpPrague')
-            .attr('x1',p1[0])
-            .attr('y1',p1[1])
-            .attr('x2',p2[0])
-            .attr('y2',p2[1])
-            .attr('stroke','white');
-        
-        let leg_g =map_chart_svg
-            .append('g')
-            .attr('id','legend')
-            .attr('transform','translate(500,0)');
-
-        let g3 = leg_g.selectAll('g')
-            .data(leg_cells)
-            .enter()
-            .append('g')
-            .attr('class','leg_g')
-            .attr('transform',function(d,i) {return 'translate(0,' + i*25 + ')'});
-        
-        g3.append('rect')
-            .attr('width',15)
-            .attr('height',15)
-            .attr('fill','#bb133e')
-        g3.append('text')
-            .attr('transform','translate(20,12.5)')
-            .text(function(d) {return (d*100 + '%').replace('.',',')})
-            
-
-        let total_g =map_chart_svg
-            .append('g')
-            .attr('id','total')
-            .attr('transform','translate(100,25)')
-            .append('text')
-            .attr('x',0)
-            .attr('y',0);
-
     });
-    
-    
-    $(map_selector + ' #map_slider').slider({
-        // range: "min",
-        value:init_date.valueOf(),
-        //width:'30vw',
-        min: start.valueOf(),
-        max: end.valueOf(),
-        step:86400000,
-        create: function(event,ui) {
-          $( map_selector +' #map_slider #custom-handle' ).text( init_date.toLocaleString('cs'));
-          selected_date = init_date;
-        },
-        slide: function( event, ui ) {
-          selected_date = new Date(ui.value)
-          $(map_selector + ' #map_slider #custom-handle' ).text(selected_date.toLocaleString('cs'));
-
-          updateMapChart(map_selector,modeldata,selected_variable,selected_date)
-        },
-      });
-
 }
 
 

@@ -66,6 +66,11 @@
 div.slider {
     width:30vw;
 }
+
+div.summary_slider {
+  width:20vw;
+}
+
 div.slider_cont {
     display: flex;
     justify-content: center;
@@ -240,4 +245,10 @@ rect#border {
 
   #summary_bcg h3 {
     margin-top:10vh;
+  }
+
+  #mask_slider_main::after, #mask_slider_senior::before {
+    content: '';
+    width: 100%;
+    order: 1;
   }

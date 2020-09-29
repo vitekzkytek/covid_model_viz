@@ -2,15 +2,27 @@ let lcg; //LineChartGlobals
 
 let current_variable = 'Reported'
 let lines,legend;
-
+let tooltip;
 let chart_size = {
     viewbox:{width:960,height:500},
     viewport:{width:'80vw',height:'62vh'},
     margin: {top:0,right:0,bottom:25,left:75}}
 
-function drawLineChart(selector) {
-    updateLines(current_policy_scenario,current_baseline_scenario,current_variable);
+function updateLineChart(selector) {
+    clearLineChart(selector);
+    let realdata = modeldata.series.values.Detected.map((el,i) => ({date:new Date(modeldata.series.dates[i]),value:el}));
+    
+    let lastDate = realdata.slice(-1)[0].date;
+    let predicteddata = modeldata.series.values.Reported.map((el,i) => ({date:lastDate.addDays(i),value:el}));
+
+    drawLine(realdata,"Reálně detekované případy",'#bb133e');
+    drawLine(predicteddata,"Predikce modelu na dalších 80 dní",'#ddd');
+
+    drawLegend([{color:'#bb133e',label:"Reálně detekované případy"},{color:'#ddd',label:"Predikce modelu na dalších 80 dní"}])
+
 }
+
+
 
 
 function getLineChartGlobals(selector) {
@@ -27,11 +39,11 @@ function getLineChartGlobals(selector) {
     let g = svg.append("g")
                 .attr("transform", 'translate('+chart_size.margin.left+','+chart_size.margin.top+')');
     
-    let parseDate = d3.timeParse('%Y-%m-%d');
+    //let parseDate = d3.timeParse('%Y-%m-%d');
 
-    let start = new Date(2020,1,20);
+    let start = new Date(2020,1,1);
     let today = new Date()
-    let end = today.addDays(150); //prototyped function below
+    let end = today.addDays(80); //prototyped function below
 
     let x_scale = d3.scaleTime()
             .rangeRound([0,chart_size.viewbox.width-chart_size.margin.left - chart_size.margin.right])
@@ -39,22 +51,42 @@ function getLineChartGlobals(selector) {
     
     let y_scale = d3.scaleLinear()
             .range([chart_size.viewbox.height - chart_size.margin.bottom,0])
-            .domain([0,1000000]);
-
+            .domain([0,50000]);
+    
+        
     x_axis = g.append('g')
             .attr('id','x-axis')
+            .attr('class','axis')
             .attr('transform','translate(0,' + (chart_size.viewbox.height - chart_size.margin.bottom) + ')')
-            .call(d3.axisBottom(x_scale).tickValues(d3.timeMonth.range(start,end)));
+            .call(
+                d3.axisBottom(x_scale)
+                .tickValues(d3.timeMonth.range(start,end))         
+                .tickFormat(d=>(d.toLocaleString('cs-cz',{month:'long'})))
+            );
 
     y_axis = g.append('g')
             .attr('id','y-axis')
+            .attr('class','axis')
             .call(d3.axisLeft(y_scale).ticks(6));
     
+    svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0)
+            .attr("x",0 - (chart_size.viewbox.height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Celkový počet detekovaných případů");      
+    
+    
+    tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
     
     let line_gen = d3.line()
             .defined(function (d) {return d; })
             .x(function(d) {
-                return x_scale(parseDate(d.date));
+                return x_scale(d.date);
             })
             .y(function(d) {
                 return y_scale(d.value);
@@ -62,7 +94,7 @@ function getLineChartGlobals(selector) {
 
     let g_lines = g.append('g').attr('id','lines');
     let g_circles = g.append('g').attr('id','circles')
-    let g_legend = g.append('g').attr('id','legend').attr('transform','translate(750,50)')
+    let g_legend = g.append('g').attr('id','legend').attr('transform','translate(30,30)')
 
 
     return {
@@ -73,7 +105,7 @@ function getLineChartGlobals(selector) {
         y_scale:y_scale,
         x_axis:x_axis,
         y_axis:y_axis,
-        parseDate:parseDate,
+        //parseDate:parseDate,
         line_generator:line_gen,
         g_lines:g_lines,
         g_circles:g_circles,
@@ -81,9 +113,7 @@ function getLineChartGlobals(selector) {
     }
 }
 
-function drawLine(json,variable) {
-
-    let data = json.series.values[variable].map((el,i) => ({date:json.series.dates[i],value:el}))
+function drawLine(data,seriesLabel,color) {
     let g = lcg.g;
 
     let lines = lcg.g_lines;
@@ -92,7 +122,7 @@ function drawLine(json,variable) {
         .attr('id','line')
         .datum(data)
         .attr('fill','none')
-        .attr('stroke','#bb133e')
+        .attr('stroke',color)
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
         .attr("stroke-width", 1.5)
@@ -107,13 +137,26 @@ function drawLine(json,variable) {
         .enter()
         .append('circle')
         .attr('r',3)
-        .attr('fill','#bb133e')
+        .attr('fill',color)
         .attr('cy',function(d){
             return lcg.y_scale(d.value)
         })
         .attr('cx',function(d){
-            return lcg.x_scale(lcg.parseDate(d.date))
+            return lcg.x_scale(d.date)
         })
+        .on("mouseover", function(d) {		
+            tooltip.transition()		
+                .duration(200)		
+                .style("opacity", .9);		
+            tooltip.html(d.date.toLocaleString('cs-cz',{year: 'numeric', month: 'short', day: 'numeric'}) + "<br/>"  + Math.round(d.value))	
+                .style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 56) + "px");	
+            })					
+        .on("mouseout", function(d) {		
+            tooltip.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+        });
 
     return {
         circles:circles,
@@ -122,23 +165,13 @@ function drawLine(json,variable) {
 
 }
 
-function drawLegend(baseline_scenario,policy_scenario,baseline_color,policy_color){
+function drawLegend(legend_data){
     let g_legend = lcg.g_legend;
-    let legend_data;
-    if (baseline_scenario != policy_scenario) {
-        legend_data = [{id:policy_scenario,color:policy_color},{id:baseline_scenario,color:baseline_color}]
-    } else {
-        legend_data = [{id:policy_scenario,color:policy_color}]
-    }
-
 
     let single_legend = g_legend.selectAll('g')
         .data(legend_data)
         .enter()
         .append('g')
-        .attr('id',function(d) {
-            return d.id
-        })
         .attr('transform',function(d,i) {return 'translate(0,' +i*25 + ')'});
     single_legend.append('circle')
         .attr('r',8)
@@ -148,23 +181,26 @@ function drawLegend(baseline_scenario,policy_scenario,baseline_color,policy_colo
     single_legend.append('text')
         .attr('x',12)
         .attr('y',6)
-        .text(function(d) {return ddlconfig.scenarios.filter((o)=>{return o.id == d.id})[0].text;});
+        .text(function(d) {return d.label});
 
     return g_legend
     
 }
 
-function clearLineChart() {
+function clearLineChart(selector) {
     //clear paths
-    d3.select('#lines').selectAll('*').remove();
-    d3.select('#circles').selectAll('*').remove();
-    d3.select('#legend').selectAll('*').remove();
+    d3.select(selector + ' #lines').selectAll('*').remove();
+    d3.select(selector + ' #circles').selectAll('*').remove();
+    d3.select(selector + ' #legend').selectAll('*').remove();
 }
 
 Date.prototype.addDays = function(days) {
     var date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
     return date;
+}
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 function hexToRgb(hex) {

@@ -34,3 +34,5 @@ a.button#run_sim {
     padding:0px;
     text-align: center;
 }
+
+.axis { font-size:calc(10px + .5vh); }

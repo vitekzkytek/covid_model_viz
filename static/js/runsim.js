@@ -122,7 +122,8 @@ function run_simulation(){
         d3.select('#run_button text').text('Dosimulováno.');
 
         //drawMapChart('#MapChartContainer',selected_variable,selected_date);
-        updateMapChart('#MapChartContainer',modeldata,selected_variable,selected_date)
+        //updateMapChart('#MapChartContainer',modeldata,selected_variable,selected_date)
+        updateLineChart('#chartcontainer')
         hide_sim();
         show_chart();
     })
@@ -146,24 +147,25 @@ function hide_chart() {
 function collect_parameters() {
     return {
         school:{
-            'intensity':$('#school.slider').slider('option','value'),
-            'seniors':true//$('#school_bcg .checkbox').is(':checked')
+            'main':$('#school.slider').slider('option','value')
+            //'senior':true//$('#school_bcg .checkbox').is(':checked')
         },
         work:{
-            'intensity':$('#work.slider').slider('option','value'),
-            'seniors':true//$('#work_bcg .checkbox').is(':checked')
+            'main':$('#work.slider').slider('option','value')
+            //'seniors':true//$('#work_bcg .checkbox').is(':checked')
         },
         other:{
-            'intensity':$('#other.slider').slider('option','value'),
-            'seniors':$('#other_bcg .checkbox').is(':checked')
+            'main':$('#other_main .slider').slider('option','value'),
+            'senior':$('#other_senior .slider').slider('option','value'),
         },
         home:{
-            'intensity':$('#home.slider').slider('option','value'),
+            'main':$('#home_main .slider').slider('option','value'),
+            'senior':$('#home_senior .slider').slider('option','value'),
         },
         mask:{
-            'intensity':$('#mask_bcg .slider').slider('option','value'),
-            'seniors':$('#other_bcg .checkbox').is(':checked')
+            'main':$('#mask_slider_main .slider').slider('option','value'),
+            'senior':$('#mask_slider_senior .slider').slider('option','value'),
         },
         regions:$('#regionselector path').toArray().map(x=>$(x).hasClass('active'))
     }    
-}
+}   

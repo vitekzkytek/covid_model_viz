@@ -50,20 +50,16 @@ def run_simulation():
         'other':'con_Other',
         'school':'con_School'
     }
-    conmats = {con_labels[matrix]:(pd.DataFrame(matrices[matrix])*params[matrix]['intensity']).values.T.tolist() for matrix in matrices}
 
     api_params = {
-    # 'contact_matrices':conmats,
-        'Reopen_School':params['school']['intensity'],
-        'Reopen_School_Seniors':str(params['school']['seniors']).upper(),
-        'Reopen_Work':params['work']['intensity'],
-        'Reopen_Work_Seniors':str(params['work']['seniors']).upper(),
-        'Reopen_Other':params['other']['intensity'],
-        'Reopen_Other_Seniors':str(params['other']['seniors']).upper(),
-        'Reopen_Home':params['home']['intensity'],
-        'Reopen_Protection':params['mask']['intensity'],
-        'Reopen_Protection_Seniors':str(params['mask']['seniors']).upper(),
-        #'closeORP':str([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]),
+        'Reopen_School':params['school']['main'],
+        'Reopen_Work':params['work']['main'],
+        'Reopen_Other':params['other']['main'],
+        'Reopen_OtherS':params['other']['senior'],
+        'Reopen_Home':params['home']['main'],
+        'Reopen_HomeS':params['home']['senior'],
+        'Reopen_Protection':1-params['mask']['main'],
+        'Reopen_ProtectionS':1-params['mask']['senior'],
         'closeORP':regionsToAPI(params['regions'],orp2reg)
     }
 
@@ -71,7 +67,7 @@ def run_simulation():
         start = time.time()
         print('Requesting model at {} for params: {}'.format(time.ctime(start),str(params)))
 
-        datstring = "Reopen_School={Reopen_School}&Reopen_School_Seniors={Reopen_School_Seniors}&Reopen_Work={Reopen_Work}&Reopen_Work_Seniors={Reopen_Work_Seniors}&Reopen_Other={Reopen_Other}&Reopen_Other_Seniors={Reopen_Other_Seniors}&Reopen_Home={Reopen_Home}&Reopen_Protection={Reopen_Protection}&Reopen_Protection_Seniors={Reopen_Protection_Seniors}&closeORP={closeORP}".format(**api_params)
+        datstring = "Reopen_School={Reopen_School}&Reopen_Work={Reopen_Work}&Reopen_Other={Reopen_Other}&Reopen_OtherS={Reopen_OtherS}&Reopen_Home={Reopen_Home}&Reopen_HomeS={Reopen_HomeS}&Reopen_Protection={Reopen_Protection}&Reopen_ProtectionS={Reopen_ProtectionS}&closeORP={closeORP}".format(**api_params)
         print(datstring)
         response = requests.post(os.getenv('API_HOST') + '/model',data=datstring)
         end = time.time()

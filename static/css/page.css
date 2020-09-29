@@ -468,3 +468,18 @@ li.eastern {
     margin: 0px;
     padding: 0px;
 }
+
+a.introlink:link,a.introlink:visited, a.introlink:hover, a.introlink:active {
+    color: #ffffff;
+    /* font-weight: bolder; */
+    text-decoration: none;
+    font-size:calc(15px + .7vh);
+}
+
+a.cornerlink:link,a.cornerlink:visited, a.cornerlink:hover, a.cornerlink:active {
+    color: #bb133e;
+    font-weight: bolder;
+    text-decoration: none;
+    font-size:calc(15px + .7vh);
+    margin-left:2vw;
+}

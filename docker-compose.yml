@@ -12,8 +12,5 @@ services:
     - ./json:/app/json
     env_file:
       - env.env
-  
     ports:
       - 80:5000
-      - 5001:5001
-      - 5678:5678

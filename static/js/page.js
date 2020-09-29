@@ -16,11 +16,11 @@ function loadJS() {
     
     generateContactTables();
     
-    drawMapGlobals('#regioncontainer','#MapChartContainer',selected_date);
+    drawMapGlobals('#regioncontainer','#MapChartContainer2',selected_date);
 
     generateControls('#MapChartControls');
 
-    // lcg = getLineChartGlobals('#chartcontainer')
+    lcg = getLineChartGlobals('#chartcontainer')
 
     draw_runsim('#simcontainer')
 }
