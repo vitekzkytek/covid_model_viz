@@ -99,8 +99,8 @@ function drawTables(contact_matrices) {
 
     school = drawTable(contact_matrices['school'],'#school_bcg .table_container','school',[0,1],1)
     work = drawTable(contact_matrices['work'],'#work_bcg .table_container','work',[0,1],1)
-    other = drawTable(contact_matrices['other'],'#other_bcg .table_container','other',[0,2],1,true,1,[0,2])
-    home = drawTable(contact_matrices['home'],'#home_bcg .table_container','home',[1,2],1,true,1,[1,2])
+    other = drawTable(contact_matrices['other'],'#other_bcg .table_container','other',[0, 1],1,true,1,[0,1])
+    home = drawTable(contact_matrices['home'],'#home_bcg .table_container','home',[0,2],1,true,1,[0,2])
 
     return contact_matrices
 }
